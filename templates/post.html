@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="utf-8" />
+	<title>Considerate blog > {{title}}</title>
+	<!-- styles -->
+	<link href="/stylesheets/fontkit_2/stylesheet.css" media="screen, projection" rel="stylesheet" type="text/css" />
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+	<link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
+	<!--[if IE]>
+	    <link href="/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+	<![endif]-->
+	</head>
+	<body>
+		<h2><a id="homeLink">Home</a></h2>
+		<div id="container">
+			<header>
+				<h1><a href="{{titleLink}}" title="Return to the homepage">{{title}}</a></h1>
+
+				<nav role="navigation">
+					<ul>
+						{{#nav}}
+						<li><a href="{{link}}">{{text}}</a></li>
+						{{/nav}}
+					</ul>
+				</nav>
+			</header>
+
+			<div id="content" class="post" role="main">
+				{{>post}}
+			</div>
+		</div>
+		<div id="footer-container">
+			<footer>
+				<ul id="credits">
+				</ul>
+				<p id="back-top"><a href="/blog">Back to top</a></p>
+			</footer>
+		</div>
+	</body>
+</html>
