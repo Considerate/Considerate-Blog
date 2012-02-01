@@ -3,23 +3,24 @@ var mustache = require("mustache");
 var chromeframe = require('express-chromeframe');
 
 var tmpl = {
-  compile: function(source, options) {
+  compile: function (source, options) {
     if (typeof source == 'string') {
-      return function(options) {
+      return function (options) {
         options.locals = options.locals || {};
         options.partials = options.partials || {};
         if (options.body) // for express.js > v1.0
         {
           locals.body = options.body;
         }
-        return mustache.to_html(
-        source, options.locals, options.partials);
+        
+        var result = mustache.to_html(source, options.locals, options.partials);
+        return result;
       };
     } else {
       return source;
     }
   },
-  render: function(template, options) {
+  render: function (template, options) {
     template = this.compile(template, options);
     return template(options);
   }
@@ -27,22 +28,24 @@ var tmpl = {
 
 var app = express.createServer();
 
-app.configure(function() {
-  app.use(chromeframe());
-});
-
-app.configure(function() {
+app.configure(function () {
+  app.use(express.bodyParser());
+  app.use(express.cookieParser());
+  app.use(express.session({
+    secret: "th30n3andonlypassw0rd"
+  }));
   app.use(app.router);
-  app.use(express.static(__dirname + '/..'));
-  app.set("views", __dirname + "/../templates");
+  app.use(express.static(__dirname + '/../client'));
+  app.set("views", __dirname + "/templates");
   app.set("view options", {
     layout: false
   });
   app.register(".html", tmpl);
-  app.use(express.errorHandler({
-    dumpExceptions: true,
-    showStack: true
-  }));
 });
+
+app.configure(function () {
+  app.use(chromeframe());
+});
+
 
 exports.app = app;

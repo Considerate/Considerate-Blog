@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="utf-8" />
+	<title>Considerate blog > {{title}}</title>
+	<!-- styles -->
+	<link href="/stylesheets/fontkit_2/stylesheet.css" media="screen, projection" rel="stylesheet" type="text/css" />
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+	<link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
+	<!--[if IE]>
+	    <link href="/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="/lib/markitup/skins/markitup/style.css" />
+  <link rel="stylesheet" type="text/css" href="/lib/markitup/sets/markdown/style.css" />
+  <link rel="stylesheet" type="text/css" href="/stylesheets/markdown.css" />
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/humanity/jquery-ui.css" />
+  <script type="text/javascript" src="/lib/markitup/jquery.markitup.js"></script>
+  <script type="text/javascript" src="/lib/markitup/sets/markdown/set.js"></script>
+  
+  <script type="text/javascript" src="/lib/jquery-upload/jquery.upload-1.0.2.js"></script>
+
+  <script language="javascript" src="/javascript/editpost.js"></script>
+	</head>
+	<body>
+		<h2><a id="homeLink">Home</a></h2>
+		<div id="container">
+			<header>
+				<h1>{{heading}}</h1>
+				<nav role="navigation">
+					<ul>
+						{{#nav}}
+						<li><a href="{{link}}">{{text}}</a></li>
+						{{/nav}}
+					</ul>
+				</nav>
+			</header>
+			<div id="content" class="post" role="main">
+			  <a href="{{originalLink}}">Stop editing</a>
+				{{>editpost}}
+				<script>
+        	$(function() {
+        		var availableTags = [
+        			"Viktor Kronvall",
+        			"John Pauli Koskimaa",
+        			"Ben McGrew"
+        		];
+        		$( "#tags" ).autocomplete({
+        		  //TODO: replace with url pointing to query of users
+        			source: function(req,res) {
+        			  var query = req.term;
+        			  var filtered = availableTags.filter(function (el) {
+        			    return (el.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+        			  })
+        			  res(filtered);
+        			}
+        		});
+        	});
+        	</script>
+
+
+
+        <div class="demo">
+
+        <div class="ui-widget">
+        	<label for="tags">Author: </label>
+        	<input id="tags">
+        </div>
+
+        </div><!-- End demo -->
+				<hr>
+				<h1>Preview</h1>
+				<div id="previewarea">
+  			</div>
+			</div>
+		</div>
+		<div id="footer-container">
+			<footer>
+				<ul id="credits">
+				</ul>
+				<p id="back-top"><a href="/blog">Back to top</a></p>
+			</footer>
+		</div>
+	</body>
+</html>

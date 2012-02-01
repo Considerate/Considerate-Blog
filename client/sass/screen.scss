@@ -1,0 +1,382 @@
+/* Welcome to Compass.
+* In this file you should write your main styles. (or centralize your imports)
+* Import this file using the following HTML or equivalent:
+* <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+@import "compass/css3";
+@import "/stylesheets/fontkit/stylesheet.css";
+@import "./grid.scss";
+
+$textColor: #555;
+$postInfoColor: #999;
+$linkColor: #4b7ea9;
+$hoverColor: #105896;
+$footerBg: rgba(0,0,0,0.3);
+
+@mixin rounded($radius: 10px) {
+	border-top-left-radius: $radius;
+  border-top-right-radius: $radius;
+  border-bottom-right-radius: $radius;
+  border-bottom-left-radius: $radius;
+}
+
+@mixin innerDropShadow($from: #e2e2e2,$to : #ffffff, $fromPercent: 0%, $toPercent: 16%) {
+	background: $to; /* Old browsers */
+	background: -moz-linear-gradient(top, $from $fromPercent, $to $toPercent); /* FF3.6+ */
+	background: -webkit-linear-gradient(top, $from $fromPercent,$to $toPercent); /* Chrome10+,Safari5.1+ */
+	background: linear-gradient(top, $from $fromPercent,$to $toPercent);
+}
+
+body {
+	/*background: #dedede url(/images/bg.jpeg);*/
+	/*http://mudcu.be/bg*/
+	background: #f4f1ec;
+	background-image: url("/images/background.jpeg");
+	background-repeat: repeat, repeat;
+	font-family: 'Droid Serif', serif;
+	font-size: 14px;
+	line-height: 24px;
+	color: $textColor;
+}
+
+a {
+	color: $linkColor;
+	font-style: italic;
+	text-decoration: none;
+	&:hover {
+		color: $hoverColor;
+	}
+	
+}
+
+header, h1, h2, h3, h4, h5, h6,
+{
+	font-family: 'PrintClearlyRegular',calibri,sans-serif;
+	letter-spacing: -0.01em;
+	font-size: 32px;
+}
+
+h2 {
+  font-size: 28px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+h6 {
+  font-size: 14px;
+}
+
+#previewarea {
+  margin-top: 20px;
+  border: 2px dotted #888;
+}
+
+em {
+  font-style: italic;
+}
+
+strong, b {
+  font-weight: bold;
+}
+
+#homeLink {
+	position: relative;
+	left: -40px;
+	top: 60px;
+	font-size:180%;
+	font-weight: bold;
+	display: none;
+}
+
+#container {
+	width: 916px;
+	margin: 0 auto;
+	margin-top: 15px;
+	padding: 48px 22px 0 22px;
+	overflow: hidden;
+}
+
+header a,
+h2 a {
+	color: $textColor;
+	font-style: normal;
+	text-decoration: none;
+  font-size: 120%;
+}
+
+header {
+  margin: 0 0 98px 0;
+
+	h1 {
+		float: left;
+		font-size: 36px;
+		font-weight: normal;
+		text-align: baseline;
+		
+		&:first-letter {
+			font-size: 220%;
+		  text-align: baseline;
+		}
+		
+		a {
+			margin: 0;
+			padding: 0;
+		}
+	}
+	nav {
+		float: right;
+		text-align: right;
+		padding: 6px 0 0 0;
+		margin-top: 22px;
+		margin-bottom: 22px;
+		ul {
+			list-style: none;
+			
+			li {
+				float: left;
+				font-size: 18px;
+				width: 136px;
+				margin: 0 0 0 20px;
+				counter-increment: navCounter;
+				&:before {
+					content: ""counter(navCounter)". ";
+					color: $postInfoColor;
+				}
+			}
+		}
+	}
+}
+
+#content {
+	float: left;
+	width: 526px;
+	margin: 0 98px 0 0;
+	text-align: justify; 
+	text-justify: newspaper;
+	&.post {
+		width: 75%;
+	}
+	
+	article {
+		margin: 0 0 67px 0;
+		header a, h1 a {
+			font-style: normal;
+		}
+		
+		h2,h3,h4,h5,h6 {
+			font-size: 30px;
+			margin: 0 0 3px 0;
+			font-weight: normal;
+		}
+	}
+	.postimages img {
+		margin-right: 10px;
+		margin-top: 20px;
+		height: 150px;
+		float: left;
+		display: inline-block;
+	}
+	p {
+		margin: 0 0 24px 0;
+	}
+	.postinfo {
+		clear: left;
+		list-style: none;
+		overflow: hidden;
+		li:first-child {
+		 width: 300px; 
+		 /*display: block;*/
+		}
+		li {
+			float: left;
+			width: 100px;
+			margin: 0 15px 0 0;
+			font-size: 11px;
+			font-style: italic;
+			text-align: left;
+			color: $postInfoColor;
+		}
+	}
+}
+
+#pagination {
+	overflow: hidden;
+	margin: 0 0 120px 0;
+	ul {
+		list-style: none;
+		li {
+			font-size: 18px;
+			&.older {
+				float: left;
+			}
+			&.newer {
+				float: right;
+			}
+		}
+	}
+}
+
+
+#sidebar {
+	@include grid-page(4);
+	float: left;
+	padding: 4px 0 0 0;
+	h3 {
+		font-size: 24px;
+		font-weight: normal;
+		margin: 0 0 25px 0;
+	}
+	ul {
+		list-style: none;
+	}
+	section {
+		margin: 0 0 47px 0;
+	}
+	#about a.more {
+		display: block;
+		text-align: right;
+	}
+	#categories {
+		@include grid-column(2);
+	}
+	#social {
+    @include grid-column(2);
+	}
+	#search {
+		#searchbar {
+			width: 230px;
+			height: 36px;
+			float: left;
+			border: 1px solid #c7c7c7;
+			padding: 0 45px 0 15px;
+			margin: -8px 0 0 0;
+
+			@include innerDropShadow;
+			
+			font-size: 14px;
+			font-style: italic;
+			color: $postInfoColor;
+		}
+		#searchsubmit {
+			width: 17px;
+			height: 17px;
+			float: right;
+			margin: -27px 15px 0 0;
+			background: url(/images/search-icon.png);
+			text-indent: -9999px;
+			border: none;
+		}
+	}
+	
+}
+#footer-container {
+	background: $footerBg;
+	overflow: hidden;
+}
+footer {
+	width: 916px;
+	margin: 0 auto;
+	padding: 10px 22px 50px 22px;
+	#credits {
+		list-style: none;
+		float: left;
+		li {
+			float: left;
+			margin: 0 6px 0 0;
+			&.wordpress a {
+				display: block;
+				width: 20px;
+				height: 20px;
+				background: url(images/credits.png) no-repeat 0 0;
+				text-indent: -9999px;
+			}
+			&.spoongraphics a {
+				display: block;
+				width: 25px;
+				height: 20px;
+				background: url(images/credits.png) no-repeat -30px 0;
+				text-indent: -9999px;
+			}
+		}
+	}
+	#back-top {
+		float: right;
+		font-size: 18px;
+		vertical-align: center;
+		line-height: 50px;
+	}
+	
+}
+
+.overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  
+  background: rgba(0,0,0,0.7);
+}
+.popup {
+  position: absolute;
+  left: 50px;
+  right: 50px;
+  top: 25px;
+  bottom: 25px;
+  min-height: 400px;
+  margin-bottom: 50px;
+  overflow-y: auto;
+  
+  background: white;
+}
+
+.imageList {
+  div {
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+    display: block;
+    cursor: pointer;
+    img {
+      height: 100px;
+      padding: 10px;
+      display: block;
+    }
+  }
+}
+
+.posttitle {
+  width: 500px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

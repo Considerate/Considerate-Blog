@@ -1,0 +1,24 @@
+.markItUp  {
+	min-width:700px;
+	width: auto;
+	margin:5px 0 5px 0;
+	border: 3px solid whiteSmoke;	
+	border-radius: 3px;
+}
+.markItUpContainer  {
+	border: none;	
+	background: #efefef;
+	padding:5px 5px 2px 5px;
+	font:11px Verdana, Arial, Helvetica, sans-serif;
+}
+.markItUpEditor {
+	font:12px 'Courier New', Courier, monospace;
+	padding: 5px 5px 5px 5px;
+	width:680px;
+	height:290px;
+	clear:both;
+	line-height:18px;
+	background: white;
+	border: none;
+	overflow:auto;
+}
