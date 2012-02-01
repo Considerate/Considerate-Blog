@@ -15,6 +15,6 @@
     "node-uuid": "1.x.x",
     "temp": "0.4.x"
   },
-  "main"            : "./server/server.js",
+  "main": "./server/server.js",
   "engines": {"node": ">= 0.4.1"}
 }
