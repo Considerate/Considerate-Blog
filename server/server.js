@@ -295,4 +295,7 @@ app.get("/images/blog/:image", function (req, res) {
   }
 });
 
-app.listen(process.env.PORT || 3002);
+var port = process.env.PORT || 3002;
+app.listen(port, function() {
+  console.log("Listening on " + port);
+});
