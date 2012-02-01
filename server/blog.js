@@ -298,26 +298,29 @@ function getImage(options, res) {
     var filepath = pathdir + "/" + options.resolution + "!" + options.name;
 
     im.readMetadata(originalpath, function (err, metadata) {
-      if (err) throw err
-      var reso = options.resolution;
-      var resX = Number(reso.substring(0, reso.indexOf("x")));
-      var resY = Number(reso.substring(reso.indexOf("x" + 1)));
+      if (err) {
 
-      if (metadata && metadata.exif && resX >= metadata.exif.exifImageLength && resY > metadata.exif.exifImageWidth) {
-        res.sendfile(originalpath);
-      }
-      else {
-        path.exists(filepath, function (exists) {
-          if (exists) {
-            res.sendfile(filepath);
-          }
-          else {
-            im.convert([originalpath, '-resize', options.resolution + ">", filepath], function (err, stdout) {
-              if (err) throw err;
+      } else {
+        var reso = options.resolution;
+        var resX = Number(reso.substring(0, reso.indexOf("x")));
+        var resY = Number(reso.substring(reso.indexOf("x" + 1)));
+
+        if (metadata && metadata.exif && resX >= metadata.exif.exifImageLength && resY > metadata.exif.exifImageWidth) {
+          res.sendfile(originalpath);
+        }
+        else {
+          path.exists(filepath, function (exists) {
+            if (exists) {
               res.sendfile(filepath);
-            });
-          }
-        });
+            }
+            else {
+              im.convert([originalpath, '-resize', options.resolution + ">", filepath], function (err, stdout) {
+                if (err) throw err;
+                res.sendfile(filepath);
+              });
+            }
+          });
+        }
       }
     });
 
