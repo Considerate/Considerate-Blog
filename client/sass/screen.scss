@@ -195,18 +195,32 @@ header {
 		list-style: none;
 		overflow: hidden;
 		li:first-child {
-		 width: 300px; 
-		 /*display: block;*/
+		 width: 382px; 
+		}
+		li:last-child {
+		  text-align: right;
+		  margin: 0;
 		}
 		li {
 			float: left;
-			width: 100px;
+			width: 130px;
 			margin: 0 15px 0 0;
 			font-size: 11px;
 			font-style: italic;
 			text-align: left;
 			color: $postInfoColor;
 		}
+	}
+	.postinfo.list {
+	  li:first-child {
+		 width: 301px; 
+		}
+		li:last-child {
+		  width: 97px;
+		}
+		li {
+		  width: 90px;
+	  }
 	}
 }
 

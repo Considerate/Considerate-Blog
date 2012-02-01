@@ -353,69 +353,85 @@ header nav ul li:before {
 }
 /* line 197, ../sass/screen.scss */
 #content .postinfo li:first-child {
-  width: 300px;
-  /*display: block;*/
+  width: 382px;
 }
-/* line 201, ../sass/screen.scss */
+/* line 200, ../sass/screen.scss */
+#content .postinfo li:last-child {
+  text-align: right;
+  margin: 0;
+}
+/* line 204, ../sass/screen.scss */
 #content .postinfo li {
   float: left;
-  width: 90px;
+  width: 130px;
   margin: 0 15px 0 0;
   font-size: 11px;
   font-style: italic;
   text-align: left;
   color: #999999;
 }
+/* line 215, ../sass/screen.scss */
+#content .postinfo.list li:first-child {
+  width: 301px;
+}
+/* line 218, ../sass/screen.scss */
+#content .postinfo.list li:last-child {
+  width: 97px;
+}
+/* line 221, ../sass/screen.scss */
+#content .postinfo.list li {
+  width: 90px;
+}
 
-/* line 213, ../sass/screen.scss */
+/* line 227, ../sass/screen.scss */
 #pagination {
   overflow: hidden;
   margin: 0 0 120px 0;
 }
-/* line 216, ../sass/screen.scss */
+/* line 230, ../sass/screen.scss */
 #pagination ul {
   list-style: none;
 }
-/* line 218, ../sass/screen.scss */
+/* line 232, ../sass/screen.scss */
 #pagination ul li {
   font-size: 18px;
 }
-/* line 220, ../sass/screen.scss */
+/* line 234, ../sass/screen.scss */
 #pagination ul li.older {
   float: left;
 }
-/* line 223, ../sass/screen.scss */
+/* line 237, ../sass/screen.scss */
 #pagination ul li.newer {
   float: right;
 }
 
-/* line 231, ../sass/screen.scss */
+/* line 245, ../sass/screen.scss */
 #sidebar {
   width: 288px;
   margin: 0 auto;
   float: left;
   padding: 4px 0 0 0;
 }
-/* line 235, ../sass/screen.scss */
+/* line 249, ../sass/screen.scss */
 #sidebar h3 {
   font-size: 24px;
   font-weight: normal;
   margin: 0 0 25px 0;
 }
-/* line 240, ../sass/screen.scss */
+/* line 254, ../sass/screen.scss */
 #sidebar ul {
   list-style: none;
 }
-/* line 243, ../sass/screen.scss */
+/* line 257, ../sass/screen.scss */
 #sidebar section {
   margin: 0 0 47px 0;
 }
-/* line 246, ../sass/screen.scss */
+/* line 260, ../sass/screen.scss */
 #sidebar #about a.more {
   display: block;
   text-align: right;
 }
-/* line 250, ../sass/screen.scss */
+/* line 264, ../sass/screen.scss */
 #sidebar #categories {
   float: left;
   margin-right: 10px;
@@ -425,7 +441,7 @@ header nav ul li:before {
 .ie6 #sidebar #categories {
   display: inline;
 }
-/* line 253, ../sass/screen.scss */
+/* line 267, ../sass/screen.scss */
 #sidebar #social {
   float: left;
   margin-right: 10px;
@@ -435,7 +451,7 @@ header nav ul li:before {
 .ie6 #sidebar #social {
   display: inline;
 }
-/* line 257, ../sass/screen.scss */
+/* line 271, ../sass/screen.scss */
 #sidebar #search #searchbar {
   width: 230px;
   height: 36px;
@@ -454,7 +470,7 @@ header nav ul li:before {
   font-style: italic;
   color: #999999;
 }
-/* line 271, ../sass/screen.scss */
+/* line 285, ../sass/screen.scss */
 #sidebar #search #searchsubmit {
   width: 17px;
   height: 17px;
@@ -465,29 +481,29 @@ header nav ul li:before {
   border: none;
 }
 
-/* line 283, ../sass/screen.scss */
+/* line 297, ../sass/screen.scss */
 #footer-container {
   background: rgba(0, 0, 0, 0.3);
   overflow: hidden;
 }
 
-/* line 287, ../sass/screen.scss */
+/* line 301, ../sass/screen.scss */
 footer {
   width: 916px;
   margin: 0 auto;
   padding: 10px 22px 50px 22px;
 }
-/* line 291, ../sass/screen.scss */
+/* line 305, ../sass/screen.scss */
 footer #credits {
   list-style: none;
   float: left;
 }
-/* line 294, ../sass/screen.scss */
+/* line 308, ../sass/screen.scss */
 footer #credits li {
   float: left;
   margin: 0 6px 0 0;
 }
-/* line 297, ../sass/screen.scss */
+/* line 311, ../sass/screen.scss */
 footer #credits li.wordpress a {
   display: block;
   width: 20px;
@@ -495,7 +511,7 @@ footer #credits li.wordpress a {
   background: url(images/credits.png) no-repeat 0 0;
   text-indent: -9999px;
 }
-/* line 304, ../sass/screen.scss */
+/* line 318, ../sass/screen.scss */
 footer #credits li.spoongraphics a {
   display: block;
   width: 25px;
@@ -503,7 +519,7 @@ footer #credits li.spoongraphics a {
   background: url(images/credits.png) no-repeat -30px 0;
   text-indent: -9999px;
 }
-/* line 313, ../sass/screen.scss */
+/* line 327, ../sass/screen.scss */
 footer #back-top {
   float: right;
   font-size: 18px;
@@ -511,7 +527,7 @@ footer #back-top {
   line-height: 50px;
 }
 
-/* line 322, ../sass/screen.scss */
+/* line 336, ../sass/screen.scss */
 .overlay {
   position: fixed;
   top: 0px;
@@ -521,7 +537,7 @@ footer #back-top {
   background: rgba(0, 0, 0, 0.7);
 }
 
-/* line 331, ../sass/screen.scss */
+/* line 345, ../sass/screen.scss */
 .popup {
   position: absolute;
   left: 50px;
@@ -534,21 +550,21 @@ footer #back-top {
   background: white;
 }
 
-/* line 345, ../sass/screen.scss */
+/* line 359, ../sass/screen.scss */
 .imageList div {
   border-bottom: 1px solid #ccc;
   width: 100%;
   display: block;
   cursor: pointer;
 }
-/* line 350, ../sass/screen.scss */
+/* line 364, ../sass/screen.scss */
 .imageList div img {
   height: 100px;
   padding: 10px;
   display: block;
 }
 
-/* line 358, ../sass/screen.scss */
+/* line 372, ../sass/screen.scss */
 .posttitle {
   width: 500px;
 }

@@ -78,7 +78,7 @@ function getPosts(blog, callback, options) {
     res.forEach(function (key, post, id) {
       post = handlePost(post);
       posts.push(post);
-      
+
       last_key = key;
       last_id = id;
     });
@@ -107,7 +107,7 @@ function defaultOptions(options) {
       descending: true
     };
   }
-  
+
   return options;
 }
 
@@ -119,7 +119,7 @@ function handlePost(post) {
   post.date = dateFormat(date, "yyyy-mm-dd HH:MM");
 
   //Generate image URLs
-  /*
+/*
   for (var index in row._attachments) {
     if (row._attachments.hasOwnProperty(index)) {
       image_data = row._attachments[index];
@@ -162,8 +162,9 @@ function getByTitle(blog, title, callback) {
   var last_id = null;
   var title = generateSlug(title);
   var options = defaultOptions();
-  options.startkey = [title,{}];
-  options.endkey = [title,0];
+  options.startkey = [title,
+  {}];
+  options.endkey = [title, 0];
 
   db.view("blog/title", options, function (err, res) {
     var post = res[0].value;
@@ -175,13 +176,15 @@ function getByTitle(blog, title, callback) {
 /**
  * Get posts by author
  */
+
 function getByAuthor(blog, author, callback) {
   var last_key = {};
   var last_id = null;
   var author = generateSlug(author);
   var options = defaultOptions();
-  options.startkey = [author,{}];
-  options.endkey = [author,0];
+  options.startkey = [author,
+  {}];
+  options.endkey = [author, 0];
 
   db.view("blog/author", options, function (err, res) {
     console.log(res);
@@ -210,7 +213,7 @@ function getBySearch(blog, searchQuery, callback) {
   getPosts(blog, function (posts) {
     var result = posts.filter(function (item) {
       //Filter out all not matching search query
-      return (item.slug.match(searchQuery) || item.text.match(searchQuery,"i"));
+      return (item.slug.match(searchQuery) || item.text.match(searchQuery, "i"));
     });
     callback(result);
   }, options);
@@ -223,15 +226,16 @@ function getBySearch(blog, searchQuery, callback) {
 
 function getByCategory(blog, category, callback) {
   category = generateSlug(category);
-  
+
   var last_key = {};
   var last_id = null;
   var options = defaultOptions();
-  options.startkey = [category,{}];
-  options.endkey = [category,0];
+  options.startkey = [category,
+  {}];
+  options.endkey = [category, 0];
 
   db.view("blog/category", options, function (err, res) {
-    if(err) throw JSON.stringify(err);
+    if (err) throw JSON.stringify(err);
     var posts = [];
     res.forEach(function (key, post, id) {
       post = handlePost(post);
@@ -299,7 +303,7 @@ function getImage(options, res) {
       var resX = Number(reso.substring(0, reso.indexOf("x")));
       var resY = Number(reso.substring(reso.indexOf("x" + 1)));
 
-      if (resX >= metadata.exif.exifImageLength && resY > metadata.exif.exifImageWidth) {
+      if (metadata && metadata.exif && resX >= metadata.exif.exifImageLength && resY > metadata.exif.exifImageWidth) {
         res.sendfile(originalpath);
       }
       else {
