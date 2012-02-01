@@ -11,7 +11,7 @@ var path = require("path");
 var ghm = require("github-flavored-markdown");
 
 // Print all of the news items on hackernews
-var jsdom = require('jsdom');
+//var jsdom = require('jsdom');
 
 var im = require("imagemagick");
 
@@ -132,7 +132,7 @@ function handlePost(post) {
   }*/
   post.text = convertMarkdownToHTML(post.markdown);
 
-  var doc = jsdom.jsdom("<html><body>" + post.text + "</body></html>");
+  /*var doc = jsdom.jsdom("<html><body>" + post.text + "</body></html>");
   var window = doc.createWindow();
   var plainText = window.document.body.textContent;
   if (plainText.length > 300) {
@@ -142,7 +142,8 @@ function handlePost(post) {
     } else {
       plainText = plainText.substring(0, index + 1);
     }
-  }
+  }*/
+  var plainText = post.text;
   post.shorttext = plainText;
 
   post.slug = generateSlug(post.title);
