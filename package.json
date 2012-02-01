@@ -10,7 +10,7 @@
     "github-flavored-markdown": "1.x.x",
     "hashlib": "1.x.x",
     "imagemagick": "0.1.x",
-    "jsdom": "0.2.x",
+    "jsdom": ">=0.1.5",
     "mustache": "0.4.x",
     "node-uuid": "1.x.x",
     "temp": "0.4.x",
