@@ -1,6 +1,6 @@
 {
   "name": "insignificantblog",
-  "version" : "0.0.1a",
+  "version": "0.0.1a",
   "description": "",
   "author": "",
   "dependencies": {
@@ -10,8 +10,8 @@
     "github-flavored-markdown": "1.x.x",
     "hashlib": "1.x.x",
     "imagemagick": "0.1.x",
-    "jsdom": ">=0.1.0",
-    "contextify" "0.0.x",
+    "jsdom": ">= 0.1.0",
+    "contextify""0.0.7",
     "cssom": "0.2.x",
     "htmlparser": "1.7.x",
     "request": "2.x.x",
@@ -24,5 +24,7 @@
     "socket.io": "0.8.4"
   },
   "main": "./server/server.js",
-  "engines": {"node": ">= 0.4.1"}
+  "engines": {
+    "node": ">= 0.4.1"
+  }
 }
