@@ -137,6 +137,10 @@ function handlePost(post) {
   var plainText = window.document.body.textContent;
   if (plainText.length > 300) {
     var index = plainText.indexOf(".", 300);
+    var questionIndex = plainText.indexOf("?", 300);
+    if(questionIndex < index && questionIndex !== -1) {
+      index = questionIndex;
+    }
     if (index === -1) {
       //retain full plain text
     } else {
@@ -350,12 +354,39 @@ function uploadImage(imageFile, callback) {
   console.log(imageFile.filename);
   var filename = id + path.extname(imageFile.filename);
   var filepath = pathdir + "/" + filename;
-  fs.rename(imageFile.path, filepath, function (err) {
+  copyFile(imageFile.path, filepath, function (err) {
     if (err) throw err;
     console.log("File " + filepath + " uploaded");
     callback(filename, filepath, id)
   });
+  /*
+  fs.rename(imageFile.path, filepath, function (err) {
+    if (err) throw err;
+    console.log("File " + filepath + " uploaded");
+    callback(filename, filepath, id)
+  });*/
 }
+
+function copyFile(src, dst, cb) {
+  function copy(err) {
+    var is, os;
+
+    if (!err) {
+      return cb(new Error("File " + dst + " exists."));
+    }
+
+    fs.stat(src, function (err) {
+      if (err) {
+        return cb(err);
+      }
+      is = fs.createReadStream(src);
+      os = fs.createWriteStream(dst);
+      require("util").pump(is, os, cb);
+    });
+  }
+
+  fs.stat(dst, copy);
+};
 
 function getPDF(options) {
   if (options.css) {
