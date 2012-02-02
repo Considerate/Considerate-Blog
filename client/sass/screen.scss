@@ -79,7 +79,7 @@ h6 {
 
 #previewarea {
   margin-top: 20px;
-  border: 2px dotted #888;
+  outline: 2px dotted #888;
 }
 
 em {
@@ -165,7 +165,7 @@ header {
 	text-align: justify; 
 	text-justify: newspaper;
 	&.post {
-		width: 75%;
+		width: 690px;
 	}
 	
 	article {
@@ -178,6 +178,35 @@ header {
 			font-size: 30px;
 			margin: 0 0 3px 0;
 			font-weight: normal;
+		}
+		.articlecontent, #previewarea {
+		  img, video, iframe {
+  		  border: 5px solid white;
+  		  border-radius: 5px;
+  		  box-shadow: 0px 6px 12px rgba(0,0,0,0.2);
+  		}
+		}
+		
+		.poster {
+		  margin-right: 10px;
+		  margin-top: 10px;
+		  width: 200px;
+		  height: 120px;
+		  float: left;
+		  border: 5px solid white;
+		  border-radius: 5px;
+		  box-shadow: 0px 6px 12px rgba(0,0,0,0.2);
+		  img,video {
+		    margin: 0;
+		    padding: 0;
+		    width: 100%;
+		    height: 100%;
+		  }
+		}
+		
+		&:after {
+		  height: 0px;
+		  clear: both;
 		}
 	}
 	.postimages img {

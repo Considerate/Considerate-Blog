@@ -39,41 +39,42 @@
 			</header>
 			<div id="content" class="post" role="main">
 			  <a href="{{originalLink}}">Stop editing</a>
-				{{>editpost}}
-				<script>
-        	$(function() {
-        		var availableTags = [
-        			"Viktor Kronvall",
-        			"John Pauli Koskimaa",
-        			"Ben McGrew"
-        		];
-        		$( "#tags" ).autocomplete({
-        		  //TODO: replace with url pointing to query of users
-        			source: function(req,res) {
-        			  var query = req.term;
-        			  var filtered = availableTags.filter(function (el) {
-        			    return (el.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-        			  })
-        			  res(filtered);
-        			}
-        		});
-        	});
-        	</script>
+			  <article>
+				  {{>editpost}}
+  				<script>
+          	$(function() {
+          		var availableTags = [
+          			"Viktor Kronvall",
+          			"John Pauli Koskimaa",
+          			"Ben McGrew"
+          		];
+          		$( "#tags" ).autocomplete({
+          		  //TODO: replace with url pointing to query of users
+          			source: function(req,res) {
+          			  var query = req.term;
+          			  var filtered = availableTags.filter(function (el) {
+          			    return (el.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+          			  })
+          			  res(filtered);
+          			}
+          		});
+          	});
+          	</script>
 
 
-
-        <div class="demo">
-
-        <div class="ui-widget">
-        	<label for="tags">Author: </label>
-        	<input id="tags">
-        </div>
-
-        </div><!-- End demo -->
-				<hr>
-				<h1>Preview</h1>
-				<div id="previewarea">
-  			</div>
+          <!-- 
+          <div class="demo">
+          <div class="ui-widget">
+          	<label for="tags">Author: </label>
+          	<input id="tags">
+          </div>
+          </div>
+          -->
+  				<hr>
+  				<h1>Preview</h1>
+  				<div id="previewarea">
+    			</div>
+  			</article>
 			</div>
 		</div>
 		<div id="footer-container">

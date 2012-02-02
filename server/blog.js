@@ -53,9 +53,11 @@ var authenticate = function (login, password, callback) {
 };
 
 function savePost(blog, post, callback) {
+  post.type = "post";
   if (post.newpost === true) {
     delete post.newpost;
     post.created = new Date().toISOString();
+    console.log("Adding post:", post);
     db.save(post, function (err, res) {
       callback();
     });
@@ -63,6 +65,7 @@ function savePost(blog, post, callback) {
   else {
     var id = post._id;
     delete post.newpost;
+    console.log("Editing post: ", post);
     db.save(post._id, post._rev, post, function (err, res) {
       callback();
     });
@@ -138,7 +141,7 @@ function handlePost(post) {
   if (plainText.length > 300) {
     var index = plainText.indexOf(".", 300);
     var questionIndex = plainText.indexOf("?", 300);
-    if(questionIndex < index && questionIndex !== -1) {
+    if (questionIndex < index && questionIndex !== -1) {
       index = questionIndex;
     }
     if (index === -1) {
@@ -272,8 +275,13 @@ function getLatest(blog, callback) {
 
 function generateSlug(string) {
   var slug;
-  slug = string.replace(/[^a-zA-Z0-9]+/g, '-');
-  slug = slug.toLowerCase();
+  if (!string) {
+    slug = "";
+  }
+  else {
+    slug = string.replace(/[^a-zA-Z0-9]+/g, '-');
+    slug = slug.toLowerCase();
+  }
   return slug;
 }
 
@@ -359,7 +367,7 @@ function uploadImage(imageFile, callback) {
     console.log("File " + filepath + " uploaded");
     callback(filename, filepath, id)
   });
-  /*
+/*
   fs.rename(imageFile.path, filepath, function (err) {
     if (err) throw err;
     console.log("File " + filepath + " uploaded");
@@ -524,12 +532,6 @@ function convertMarkdownToHTML(markdown, allowedTags, allowedAttributes, forcePr
       var imageurl = "";
 
       return '\n<div class="embeddedvideo">\n<video width="100%" height="100%" poster="' + imageurl + '" controls="controls" style="width:100%; height:100%; background: black;">' + '    <source type="video/webm" src="' + videourlwebm + '" />' + '</video>\n</div>\n';
-      //'    <source type="video/mp4" src="' + videourlmp4 + '" />' + 
-      //'    <object width="' + 640 + '" height="' + 480 + '" type="application/x-shockwave-flash" data="/scripts/flashmediaelement.swf">' + 
-      //'        <param name="movie" value="/scripts/flashmediaelement.swf" />' + 
-      //'        <param name="flashvars" value="controls=true&file=' + videourlmp4 + '" />' +
-      //'        <img src="' + imageurl + '" width="' + 640 + '" height="' + 480 + '" title="No video playback capabilities" />' + //Image as a last resort 
-      //'    </object>' +
     });
 
     // %[webmurl,posterimageurl,mp4url]

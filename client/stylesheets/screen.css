@@ -219,7 +219,7 @@ h6 {
 /* line 80, ../sass/screen.scss */
 #previewarea {
   margin-top: 20px;
-  border: 2px dotted #888;
+  outline: 2px dotted #888;
 }
 
 /* line 85, ../sass/screen.scss */
@@ -317,7 +317,7 @@ header nav ul li:before {
 }
 /* line 167, ../sass/screen.scss */
 #content.post {
-  width: 75%;
+  width: 690px;
 }
 /* line 171, ../sass/screen.scss */
 #content article {
@@ -334,6 +334,35 @@ header nav ul li:before {
   font-weight: normal;
 }
 /* line 183, ../sass/screen.scss */
+#content article .articlecontent img, #content article .articlecontent video, #content article .articlecontent iframe, #content article #previewarea img, #content article #previewarea video, #content article #previewarea iframe {
+  border: 5px solid white;
+  border-radius: 5px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+/* line 190, ../sass/screen.scss */
+#content article .poster {
+  margin-right: 10px;
+  margin-top: 10px;
+  width: 200px;
+  height: 120px;
+  float: left;
+  border: 5px solid white;
+  border-radius: 5px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+/* line 199, ../sass/screen.scss */
+#content article .poster img, #content article .poster video {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+/* line 207, ../sass/screen.scss */
+#content article:after {
+  height: 0px;
+  clear: both;
+}
+/* line 212, ../sass/screen.scss */
 #content .postimages img {
   margin-right: 10px;
   margin-top: 20px;
@@ -341,26 +370,26 @@ header nav ul li:before {
   float: left;
   display: inline-block;
 }
-/* line 190, ../sass/screen.scss */
+/* line 219, ../sass/screen.scss */
 #content p {
   margin: 0 0 24px 0;
 }
-/* line 193, ../sass/screen.scss */
+/* line 222, ../sass/screen.scss */
 #content .postinfo {
   clear: left;
   list-style: none;
   overflow: hidden;
 }
-/* line 197, ../sass/screen.scss */
+/* line 226, ../sass/screen.scss */
 #content .postinfo li:first-child {
   width: 382px;
 }
-/* line 200, ../sass/screen.scss */
+/* line 229, ../sass/screen.scss */
 #content .postinfo li:last-child {
   text-align: right;
   margin: 0;
 }
-/* line 204, ../sass/screen.scss */
+/* line 233, ../sass/screen.scss */
 #content .postinfo li {
   float: left;
   width: 130px;
@@ -370,68 +399,68 @@ header nav ul li:before {
   text-align: left;
   color: #999999;
 }
-/* line 215, ../sass/screen.scss */
+/* line 244, ../sass/screen.scss */
 #content .postinfo.list li:first-child {
   width: 301px;
 }
-/* line 218, ../sass/screen.scss */
+/* line 247, ../sass/screen.scss */
 #content .postinfo.list li:last-child {
   width: 97px;
 }
-/* line 221, ../sass/screen.scss */
+/* line 250, ../sass/screen.scss */
 #content .postinfo.list li {
   width: 90px;
 }
 
-/* line 227, ../sass/screen.scss */
+/* line 256, ../sass/screen.scss */
 #pagination {
   overflow: hidden;
   margin: 0 0 120px 0;
 }
-/* line 230, ../sass/screen.scss */
+/* line 259, ../sass/screen.scss */
 #pagination ul {
   list-style: none;
 }
-/* line 232, ../sass/screen.scss */
+/* line 261, ../sass/screen.scss */
 #pagination ul li {
   font-size: 18px;
 }
-/* line 234, ../sass/screen.scss */
+/* line 263, ../sass/screen.scss */
 #pagination ul li.older {
   float: left;
 }
-/* line 237, ../sass/screen.scss */
+/* line 266, ../sass/screen.scss */
 #pagination ul li.newer {
   float: right;
 }
 
-/* line 245, ../sass/screen.scss */
+/* line 274, ../sass/screen.scss */
 #sidebar {
   width: 288px;
   margin: 0 auto;
   float: left;
   padding: 4px 0 0 0;
 }
-/* line 249, ../sass/screen.scss */
+/* line 278, ../sass/screen.scss */
 #sidebar h3 {
   font-size: 24px;
   font-weight: normal;
   margin: 0 0 25px 0;
 }
-/* line 254, ../sass/screen.scss */
+/* line 283, ../sass/screen.scss */
 #sidebar ul {
   list-style: none;
 }
-/* line 257, ../sass/screen.scss */
+/* line 286, ../sass/screen.scss */
 #sidebar section {
   margin: 0 0 47px 0;
 }
-/* line 260, ../sass/screen.scss */
+/* line 289, ../sass/screen.scss */
 #sidebar #about a.more {
   display: block;
   text-align: right;
 }
-/* line 264, ../sass/screen.scss */
+/* line 293, ../sass/screen.scss */
 #sidebar #categories {
   float: left;
   margin-right: 10px;
@@ -441,7 +470,7 @@ header nav ul li:before {
 .ie6 #sidebar #categories {
   display: inline;
 }
-/* line 267, ../sass/screen.scss */
+/* line 296, ../sass/screen.scss */
 #sidebar #social {
   float: left;
   margin-right: 10px;
@@ -451,7 +480,7 @@ header nav ul li:before {
 .ie6 #sidebar #social {
   display: inline;
 }
-/* line 271, ../sass/screen.scss */
+/* line 300, ../sass/screen.scss */
 #sidebar #search #searchbar {
   width: 230px;
   height: 36px;
@@ -470,7 +499,7 @@ header nav ul li:before {
   font-style: italic;
   color: #999999;
 }
-/* line 285, ../sass/screen.scss */
+/* line 314, ../sass/screen.scss */
 #sidebar #search #searchsubmit {
   width: 17px;
   height: 17px;
@@ -481,29 +510,29 @@ header nav ul li:before {
   border: none;
 }
 
-/* line 297, ../sass/screen.scss */
+/* line 326, ../sass/screen.scss */
 #footer-container {
   background: rgba(0, 0, 0, 0.3);
   overflow: hidden;
 }
 
-/* line 301, ../sass/screen.scss */
+/* line 330, ../sass/screen.scss */
 footer {
   width: 916px;
   margin: 0 auto;
   padding: 10px 22px 50px 22px;
 }
-/* line 305, ../sass/screen.scss */
+/* line 334, ../sass/screen.scss */
 footer #credits {
   list-style: none;
   float: left;
 }
-/* line 308, ../sass/screen.scss */
+/* line 337, ../sass/screen.scss */
 footer #credits li {
   float: left;
   margin: 0 6px 0 0;
 }
-/* line 311, ../sass/screen.scss */
+/* line 340, ../sass/screen.scss */
 footer #credits li.wordpress a {
   display: block;
   width: 20px;
@@ -511,7 +540,7 @@ footer #credits li.wordpress a {
   background: url(images/credits.png) no-repeat 0 0;
   text-indent: -9999px;
 }
-/* line 318, ../sass/screen.scss */
+/* line 347, ../sass/screen.scss */
 footer #credits li.spoongraphics a {
   display: block;
   width: 25px;
@@ -519,7 +548,7 @@ footer #credits li.spoongraphics a {
   background: url(images/credits.png) no-repeat -30px 0;
   text-indent: -9999px;
 }
-/* line 327, ../sass/screen.scss */
+/* line 356, ../sass/screen.scss */
 footer #back-top {
   float: right;
   font-size: 18px;
@@ -527,7 +556,7 @@ footer #back-top {
   line-height: 50px;
 }
 
-/* line 336, ../sass/screen.scss */
+/* line 365, ../sass/screen.scss */
 .overlay {
   position: fixed;
   top: 0px;
@@ -537,7 +566,7 @@ footer #back-top {
   background: rgba(0, 0, 0, 0.7);
 }
 
-/* line 345, ../sass/screen.scss */
+/* line 374, ../sass/screen.scss */
 .popup {
   position: absolute;
   left: 50px;
@@ -550,21 +579,21 @@ footer #back-top {
   background: white;
 }
 
-/* line 359, ../sass/screen.scss */
+/* line 388, ../sass/screen.scss */
 .imageList div {
   border-bottom: 1px solid #ccc;
   width: 100%;
   display: block;
   cursor: pointer;
 }
-/* line 364, ../sass/screen.scss */
+/* line 393, ../sass/screen.scss */
 .imageList div img {
   height: 100px;
   padding: 10px;
   display: block;
 }
 
-/* line 372, ../sass/screen.scss */
+/* line 401, ../sass/screen.scss */
 .posttitle {
   width: 500px;
 }

@@ -147,6 +147,7 @@ app.get("/edit/blog/new", requiresLogin, function (req, res) {
 
 app.post("/edit/blog/new", requiresLogin, function (req, res) {
   blogEngine.savePost(blog, {
+    author: req.session.user.name,
     newpost: true,
     title: req.body.posttitle,
     markdown: req.body.postbody
@@ -164,7 +165,6 @@ app.get("/edit/blog/:post", requiresLogin, function (req, res) {
     post.titleLink = req.url;
     post.originalLink = "/blog/"+postName;
     post.heading = "Edit post";
-    console.log(post);
     res.render("editpost.html", {
       locals: post,
       partials: partials
@@ -177,7 +177,7 @@ app.post("/edit/blog/:post", requiresLogin, function (req, res) {
   blogEngine.getByTitle(blog, postName, function (post) {
     post.title = req.body.posttitle;
     post.markdown = req.body.postbody;
-    console.log(post.markdown);
+    post.author = req.session.user.name;
     blogEngine.savePost(blog, post, function () {
       res.end(JSON.stringify({
         success: true
