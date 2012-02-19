@@ -374,7 +374,7 @@ function getImage(options, res) {
   var user = options.user;
   var pathdir = config.imagedir + user;
   var originalpath = pathdir + "/" + options.name;
-  path.exists(filepath, function (exists) {
+  path.exists(originalpath, function (exists) {
     if (exists) {
       handleImage();
     }
