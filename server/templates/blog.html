@@ -12,8 +12,19 @@
 	<![endif]-->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script> 
 	<script type="text/javascript" src="/client.js"></script> 
+	<script type="text/javascript">
+   document.createElement('header');
+   document.createElement('hgroup');
+   document.createElement('nav');
+   document.createElement('menu');
+   document.createElement('section');
+   document.createElement('article');
+   document.createElement('aside');
+   document.createElement('footer');
+  </script>
 	</head>
 	<body>
+	  {{>editbar}}
 		<div id="container">
 			<h2><a id="homeLink" href="/blog">Home</a></h2>
 			<header>
@@ -29,7 +40,6 @@
 			</header>
 
 			<div id="content" role="main">
-			  <a href="/edit/blog/new">Add</a>
 				<div class="posts">
 				{{#posts}}
 				   {{>bloglistpost}}

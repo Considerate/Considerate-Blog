@@ -1,8 +1,10 @@
-<article>
+<article class="{{unapproved}}">
 	<h1><a href="/blog/{{slug}}">{{title}}</a></h1>
-	<div class="poster">
-	  <img alt="Poster image goes here"/>
-	</div>
+	{{#poster}}
+		<div class="poster">
+	    <img src="/blog/images/poster/{{user}}/210x141!{{posterimg}}" alt="{{altposter}}"/>
+	  </div>
+	{{/poster}}
 	<div class="articlecontent">
 		{{{shorttext}}}
 	</div>

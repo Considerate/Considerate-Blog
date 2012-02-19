@@ -102,7 +102,15 @@
       {
         name: 'Picture',
         key: 'P',
-        replaceWith: addPicture
+        replaceWith: function (markItUp) {
+          addPicture(function (file, link) {
+            $.markItUp({
+              target: markItUp.textarea,
+              replaceWith: '![Alternative text](' + link + ')'
+            });
+            updatePreview($(".posttitle").val(), $(markItUp.textarea));
+          });
+        }
       },
       {
         name: 'Link',
@@ -133,9 +141,36 @@
       }]
     }
   }
+  
+  function createNotification(string) {
+    var popup = createPopup();
+    popup.text(string);
+    setTimeout(function() {
+      removePopup(popup);
+    },1500);
+    return popup;
+  }
 
-  function addPicture(markItUp) {
+  function createPopup() {
     var popup = $("<div class='popup'></div>");
+    var overlay = $("<div class='overlay'></div>");
+    overlay.click(function (event) {
+      if (event.target === this) {
+        $(this).remove();
+      }
+    })
+    overlay.append(popup);
+    $("body").append(overlay);
+
+    return popup;
+  }
+
+  function removePopup(popup) {
+    popup.parent().remove();
+  }
+
+  function addPicture(callback) {
+    var popup = createPopup();
     var form = "<form action='/blog/image' target='upload_frame' method='post' enctype='multipart/form-data' encoding='multipart/form-data'>";
     var formObject = $(form);
     var fileInput = $("<input type='file' name='image'/>");
@@ -155,30 +190,31 @@
 
       $.markItUp({
         target: markItUp.textarea,
-        replaceWith: '![Alternative text](/images/blog/' + filename + ')'
+        replaceWith: '![Alternative text](/blog/images/' + filename + ')'
       });
-      overlay.remove();
+      removePopup(popup);
 
     });
     popup.append(iframe);
     popup.append(formObject);
 
     var imageList = $("<div class='imageList'/>");
-    $.getJSON("/images/list/blog", function (files) {
+    $.getJSON("/blog/images/list", function (files) {
       for (var i = 0; i < files.length; i++) {
         var file = files[i];
         (function (file) {
-          var link = "/images/blog/680x1000!" + file;
-          var previewLink = "/images/blog/500x100!" + file;
+          var link = "/blog/images/" + file.user + "/680x1000!" + file.filename;
+          var posterlink = "/blog/images/poster/" + file.user + "/680x455!" + file.filename;
+          var thumbposterlink = "/blog/images/poster/" + file.user + "/210x141!" + file.filename;
+          var previewLink = "/blog/images/" + file.user + "/500x100!" + file.filename;
           var imageHolder = $("<div/>");
           var image = $("<img src='" + previewLink + "'/>");
           imageHolder.append(image);
           imageHolder.click(function () {
-            $.markItUp({
-              target: markItUp.textarea,
-              replaceWith: '![Alternative text](' + link + ')'
+            callback(file, link, {
+              posterlink: posterlink,
+              thumbposterlink: thumbposterlink
             });
-            updatePreview($(".posttitle").val(), $(markItUp.textarea));
             overlay.remove();
           });
           imageList.append(imageHolder);
@@ -186,14 +222,7 @@
       }
     });
     popup.append(imageList);
-    var overlay = $("<div class='overlay'></div>");
-    overlay.click(function (event) {
-      if (event.target === this) {
-        $(this).remove();
-      }
-    })
-    overlay.append(popup);
-    $("body").append(overlay);
+
   }
 
   function updatePreview(title, textarea) {
@@ -202,7 +231,6 @@
       data: "#" + title + "\n" + textarea.val()
     }, function (data) {
       $("#previewarea").html(String(data));
-      console.log(data);
     });
   }
 
@@ -210,10 +238,11 @@
     // Add markItUp! to your textarea in one line
     // $('textarea').markItUp( { Settings }, { OptionalExtraSettings } );
     var textarea = $('textarea.markdown');
+    var posterobj;
 
     var settings = miu.mySettings;
     textarea.markItUp(settings);
-    
+
     var titlefield = $(".posttitle");
 
     textarea.keyup(function () {
@@ -233,7 +262,7 @@
         updatePreview(titlefield.val(), textarea);
       }, 300));
     });
-    
+
     titlefield.keyup(function () {
       clearTimeout($.data(this, 'timer'));
       var input = this;
@@ -243,22 +272,36 @@
       }, 300));
     });
     updatePreview(titlefield.val(), textarea);
+
+    $(".fullposter").click(function () {
+      var poster = $(this);
+      addPicture(function (file, link, morelinks) {
+        poster.html("<img src='" + morelinks.posterlink + "'/>");
+        posterobj = {
+          user: file.user,
+          posterimg: file.filename
+        }
+      });
+    });
+
     $("#savePostButton").click(function (event) {
       event.preventDefault();
-      
-      $.post(window.location.href,{
+
+      $.post(window.location.href, {
         posttitle: titlefield.val(),
-        postbody: textarea.val()
+        postbody: textarea.val(),
+        poster: posterobj
       }, function (response) {
         var data = JSON.stringify(response);
-        if(data.error) {
-          console.log(data.error);
+        if (data.error) {
+          createNotification(data.error);
           return;
         }
-        
-        console.log("Saved post");
+
+        createNotification("Saved post");
       }, "text");
     });
+
   });
 
 

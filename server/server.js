@@ -8,7 +8,8 @@ var hashlib = require('hashlib');
 var partials = {
   post: fs.readFileSync(__dirname + "/templates/partials/post.html", 'utf8'),
   editpost: fs.readFileSync(__dirname + "/templates/partials/editpost.html", 'utf8'),
-  bloglistpost: fs.readFileSync(__dirname + "/templates/partials/bloglistpost.html", 'utf8')
+  bloglistpost: fs.readFileSync(__dirname + "/templates/partials/bloglistpost.html", 'utf8'),
+  editbar: fs.readFileSync(__dirname + "/templates/partials/editbar.html", 'utf8')
 }
 
 function requiresLogin(req, res, next) {
@@ -100,15 +101,33 @@ app.get("/blog", function (req, res) {
     //pagination: true
   };
 
+  if(req.session.user) {
+    if(req.session.user.admin === true) {
+      options.isAdmin = true;
+    }
+    options.sessionUser = req.session.user;
+  }
   blogEngine.getPosts(blog, function (posts, latest) {
     var renderData = blog;
     renderData.titleLink = req.url;
 
     posts.forEach(function (post) {
-      post.text = post.shorttext;
+      if (post) {
+        post.text = post.shorttext;
+        if(post.type === "unapproved post") {
+          post.unapproved = "unapproved";
+        }
+      }
     });
 
     renderData.posts = posts;
+    console.log(posts);
+    
+    if(req.session.user) {
+      renderData.editbar = {
+        add:true
+      };
+    }
 
     res.render("blog.html", {
       locals: renderData,
@@ -122,6 +141,12 @@ app.get("/blog/more", function (req, res) {
   var options = {
     pagination: true
   };
+  if(req.session.user) {
+    if(req.session.user.admin === true) {
+      options.isAdmin = true;
+    }
+    options.sessionUser = req.session.user;
+  }
   blogEngine.getPosts(blog, function (posts, latest) {
     var renderData = blog;
     renderData.titleLink = req.url;
@@ -133,24 +158,28 @@ app.get("/blog/more", function (req, res) {
   }, options);
 });
 
-app.get("/edit/blog/new", requiresLogin, function (req, res) {
+app.get("/blog/edit/new", requiresLogin, function (req, res) {
   var post = {
     heading: "Create a new post"
   }
   post.originalLink = "/blog";
-  
+  post.editbar = {
+    stopedit: true
+  };
+
   res.render("editpost.html", {
     locals: post,
     partials: partials
   });
 });
 
-app.post("/edit/blog/new", requiresLogin, function (req, res) {
+app.post("/blog/edit/new", requiresLogin, function (req, res) {
   blogEngine.savePost(blog, {
     author: req.session.user.name,
     newpost: true,
     title: req.body.posttitle,
-    markdown: req.body.postbody
+    markdown: req.body.postbody,
+    poster: req.body.poster
   }, function () {
     res.end(JSON.stringify({
       success: true
@@ -158,12 +187,22 @@ app.post("/edit/blog/new", requiresLogin, function (req, res) {
   });
 });
 
-app.get("/edit/blog/:post", requiresLogin, function (req, res) {
+app.get("/blog/edit/:post", requiresLogin, function (req, res) {
   var postName = req.params.post;
-  blogEngine.getByTitle(blog, postName, function (post) {
+  var options = {};
+  if(req.session.user) {
+    if(req.session.user.admin === true) {
+      options.isAdmin = true;
+    }
+    options.sessionUser = req.session.user;
+  }
+  blogEngine.getByTitle(blog, postName, options,function (post) {
     post.nav = blog.nav;
     post.titleLink = req.url;
-    post.originalLink = "/blog/"+postName;
+    post.originalLink = "/blog/" + postName;
+    post.editbar = {
+     stopedit: true 
+    }
     post.heading = "Edit post";
     res.render("editpost.html", {
       locals: post,
@@ -172,12 +211,21 @@ app.get("/edit/blog/:post", requiresLogin, function (req, res) {
   });
 });
 
-app.post("/edit/blog/:post", requiresLogin, function (req, res) {
+app.post("/blog/edit/:post", requiresLogin, function (req, res) {
   var postName = req.params.post;
-  blogEngine.getByTitle(blog, postName, function (post) {
+  var options = {};
+   if(req.session.user) {
+     if(req.session.user.admin === true) {
+       options.isAdmin = true;
+     }
+     options.sessionUser = req.session.user;
+   }
+  blogEngine.getByTitle(blog, postName, options,function (post) {
     post.title = req.body.posttitle;
     post.markdown = req.body.postbody;
     post.author = req.session.user.name;
+    post.user = req.session.user;
+    post.poster = req.body.poster;
     blogEngine.savePost(blog, post, function () {
       res.end(JSON.stringify({
         success: true
@@ -192,9 +240,68 @@ app.post("/blog/preview", requiresLogin, function (req, res) {
   res.end(result);
 });
 
-app.post("/blog/image", function (req, res) {
+app.get("/blog/images/list", function (req, res) {
+  var username = req.session.user._id;
+  blogEngine.getImageList(username, function (images) {
+    var result = [];
+    images.forEach(function (image) {
+      result.push({
+        filename: image,
+        user: username
+      });
+    })
+    res.end(JSON.stringify(result));
+  })
+});
+
+app.get("/blog/images/poster/:user/:image", function (req, res) {
+  var imageName = req.params.image;
+  var user = req.params.user;
+  var index = imageName.indexOf("!");
+  if (index !== -1) {
+    var resolution = imageName.substring(0, index);
+    imageName = imageName.substring(index + 1);
+    blogEngine.getImage({
+      name: imageName,
+      user: user,
+      resolution: resolution,
+      poster: true
+    }, res);
+  }
+  else {
+    blogEngine.getImage({
+      user: user,
+      name: imageName,
+      poster: true
+    }, res);
+  }
+});
+
+app.get("/blog/images/:user/:image", function (req, res) {
+  var imageName = req.params.image;
+  var user = req.params.user;
+  var index = imageName.indexOf("!");
+  if (index !== -1) {
+    var resolution = imageName.substring(0, index);
+    imageName = imageName.substring(index + 1);
+    blogEngine.getImage({
+      name: imageName,
+      user: user,
+      resolution: resolution
+    }, res);
+  }
+  else {
+    blogEngine.getImage({
+      user: user,
+      name: imageName
+    }, res);
+  }
+});
+
+app.post("/blog/image", requiresLogin, function (req, res) {
   var imageFile = req.files.image;
-  blogEngine.uploadImage(imageFile, function (filename) {
+  var user = req.session.user._id;
+  blogEngine.uploadImage(user, imageFile, function (filename) {
     var result = JSON.stringify({
       filename: filename
     });
@@ -204,7 +311,14 @@ app.post("/blog/image", function (req, res) {
 
 app.get("/blog/category/:category", function (req, res) {
   var category = req.params.category;
-  blogEngine.getByCategory(blog, category, function (posts) {
+  var options = {};
+   if(req.session.user) {
+     if(req.session.user.admin === true) {
+       options.isAdmin = true;
+     }
+     options.sessionUser = req.session.user;
+   }
+  blogEngine.getByCategory(blog, category, options, function (posts) {
     var page = blog;
     page.titleLink = req.url;
     page.posts = posts;
@@ -218,7 +332,55 @@ app.get("/blog/category/:category", function (req, res) {
 
 app.get("/blog/author/:author", function (req, res) {
   var author = req.params.author;
-  blogEngine.getByAuthor(blog, author, function (posts) {
+  var options = {};
+   if(req.session.user) {
+     if(req.session.user.admin === true) {
+       options.isAdmin = true;
+     }
+     options.sessionUser = req.session.user;
+   }
+  blogEngine.getByAuthor(blog, author, options,function (posts) {
+    var page = blog;
+    page.titleLink = req.url;
+    page.posts = posts;
+
+    res.render("blog.html", {
+      locals: page,
+      partials: partials
+    });
+  });
+});
+
+app.get("/blog/search", function (req, res) {
+  var options = {};
+   if(req.session.user) {
+     if(req.session.user.admin === true) {
+       options.isAdmin = true;
+     }
+     options.sessionUser = req.session.user;
+   }
+  blogEngine.getPosts(blog, options, function (posts) {
+    var page = blog;
+    page.titleLink = req.url;
+    page.posts = posts;
+
+    res.render("blog.html", {
+      locals: page,
+      partials: partials
+    });
+  });
+});
+
+app.get("/blog/search/:query", function (req, res) {
+  var query = req.params.query;
+  var options = {};
+   if(req.session.user) {
+     if(req.session.user.admin === true) {
+       options.isAdmin = true;
+     }
+     options.sessionUser = req.session.user;
+   }
+  blogEngine.getBySearch(blog, query, options, function (posts) {
     var page = blog;
     page.titleLink = req.url;
     page.posts = posts;
@@ -232,10 +394,32 @@ app.get("/blog/author/:author", function (req, res) {
 
 app.get("/blog/:post", function (req, res) {
   var postName = req.params.post;
-  blogEngine.getByTitle(blog, postName, function (post) {
+  var options = {};
+   if(req.session.user) {
+     if(req.session.user.admin === true) {
+       options.isAdmin = true;
+     }
+     options.sessionUser = req.session.user;
+   }
+  blogEngine.getByTitle(blog, postName, options, function (post) {
     post.nav = blog.nav;
     post.titleLink = req.url;
-    post.editLink = "/edit"+req.url;
+    post.editLink = "/blog/edit/" + postName;
+    if(req.session.user) {
+      post.editbar = {
+        edit: true
+      };
+      console.log(req.session.user);
+      if(req.session.user.admin === true) {
+        if(post.type === "unapproved post") {
+          post.editbar.approve = true;
+        }
+        else {
+          post.editbar.unapprove = true;
+        }
+      }
+      console.log(post.editbar);
+    }
 
     res.render("post.html", {
       locals: post,
@@ -244,58 +428,8 @@ app.get("/blog/:post", function (req, res) {
   });
 });
 
-app.get("/search", function (req, res) {
-  blogEngine.getPosts(blog, function (posts) {
-    var page = blog;
-    page.titleLink = req.url;
-    page.posts = posts;
-
-    res.render("blog.html", {
-      locals: page,
-      partials: partials
-    });
-  });
-});
-
-app.get("/search/:query", function (req, res) {
-  var query = req.params.query;
-  blogEngine.getBySearch(blog, query, function (posts) {
-    var page = blog;
-    page.titleLink = req.url;
-    page.posts = posts;
-
-    res.render("blog.html", {
-      locals: page,
-      partials: partials
-    });
-  });
-});
-
-app.get("/images/list/blog", function (req, res) {
-  blogEngine.getImageList(function (images) {
-    res.end(JSON.stringify(images));
-  })
-});
-
-app.get("/images/blog/:image", function (req, res) {
-  var imageName = req.params.image;
-  var index = imageName.indexOf("!");
-  if (index !== -1) {
-    var resolution = imageName.substring(0, index);
-    imageName = imageName.substring(index + 1);
-    blogEngine.getImage({
-      name: imageName,
-      resolution: resolution
-    }, res);
-  }
-  else {
-    blogEngine.getImage({
-      name: imageName
-    }, res);
-  }
-});
 
 var port = process.env.PORT || 3002;
-app.listen(port, function() {
+app.listen(port, function () {
   console.log("Listening on " + port);
 });

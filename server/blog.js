@@ -1,9 +1,7 @@
+var config = require('./config');
 var dateFormat = require('dateformat');
 var cradle = require('cradle');
-var db = new(cradle.Connection)('http://considerate.couchone.com', 80, {
-  cache: true,
-  raw: false
-}).database('blogdemo');
+var db = new(cradle.Connection)(config.db.host, config.db.port, config.db.options).database(config.db.database);
 var fs = require('fs');
 var temp = require('temp');
 var uuid = require('node-uuid');
@@ -14,6 +12,8 @@ var ghm = require("github-flavored-markdown");
 var jsdom = require('jsdom');
 
 var im = require("imagemagick");
+
+var blog = config.blog;
 
 /**
  * Get all posts
@@ -53,9 +53,10 @@ var authenticate = function (login, password, callback) {
 };
 
 function savePost(blog, post, callback) {
-  post.type = "post";
+  post = beforeSave(post);
   if (post.newpost === true) {
     delete post.newpost;
+    post.type = "unapproved post";
     post.created = new Date().toISOString();
     console.log("Adding post:", post);
     db.save(post, function (err, res) {
@@ -72,13 +73,51 @@ function savePost(blog, post, callback) {
   }
 }
 
+function beforeSave(post) {
+  post.text = convertMarkdownToHTML(post.markdown);
+
+  var doc = jsdom.jsdom("<html><body>" + post.text + "</body></html>");
+  var window = doc.createWindow();
+  var plainText = window.document.body.textContent;
+  if (plainText.length > 300) {
+    var index = plainText.indexOf(".", 300);
+    var questionIndex = plainText.indexOf("?", 300);
+    if (questionIndex < index && questionIndex !== -1) {
+      index = questionIndex;
+    }
+    if (index === -1) {
+      //retain full plain text
+    } else {
+      plainText = plainText.substring(0, index + 1);
+    }
+  }
+  post.shorttext = plainText;
+
+  post.slug = generateSlug(post.title);
+  if (post.category) {
+    post.categoryLink = "/blog/category/" + generateSlug(post.category);
+  }
+  if (post.author) {
+    post.authorLink = "/blog/author/" + generateSlug(post.author);
+  }
+  return post;
+}
+
 function getPosts(blog, callback, options) {
   options = defaultOptions(options);
 
-  db.view("blog/all", options, function (err, res) {
+  var viewName = "blog/all";
+  if (options.isAdmin === true || options.sessionUser) {
+    viewName = "blog/listall";
+  }
+
+  db.view(viewName, options, function (err, res) {
     var posts = [];
     //console.log(res);
     res.forEach(function (key, post, id) {
+      if (post.type === "unapproved post" && options.isAdmin !== true && post.user && options.sessionUser && post.user._id !== options.sessionUser._id) {
+        return;
+      }
       post = handlePost(post);
       posts.push(post);
 
@@ -94,9 +133,10 @@ function getPosts(blog, callback, options) {
 
 function defaultOptions(options) {
   var skip = 1;
-  options = options || {
-    descending: true
-  };
+  options = options || {};
+  if (options.descending !== false) {
+    options.descending = true;
+  }
   var limit = options.limit || 2;
   if (last_id === null) {
     skip = 0;
@@ -121,42 +161,6 @@ function handlePost(post) {
   var date = new Date(post.created);
   post.date = dateFormat(date, "yyyy-mm-dd HH:MM");
 
-  //Generate image URLs
-/*
-  for (var index in row._attachments) {
-    if (row._attachments.hasOwnProperty(index)) {
-      image_data = row._attachments[index];
-      images.push({
-        imageId: index,
-        content_type: image_data.content_type,
-        src: "/images/blog/" + row._id + "/" + index
-      });
-    }
-  }*/
-  post.text = convertMarkdownToHTML(post.markdown);
-
-  var doc = jsdom.jsdom("<html><body>" + post.text + "</body></html>");
-  var window = doc.createWindow();
-  var plainText = window.document.body.textContent;
-  if (plainText.length > 300) {
-    var index = plainText.indexOf(".", 300);
-    var questionIndex = plainText.indexOf("?", 300);
-    if (questionIndex < index && questionIndex !== -1) {
-      index = questionIndex;
-    }
-    if (index === -1) {
-      //retain full plain text
-    } else {
-      plainText = plainText.substring(0, index + 1);
-    }
-  }
-  post.shorttext = plainText;
-
-  post.slug = generateSlug(post.title);
-  post.categoryLink = "/blog/category/" + generateSlug(post.category);
-  if (post.author) {
-    post.authorLink = "/blog/author/" + generateSlug(post.author);
-  }
   return post;
 }
 
@@ -164,17 +168,27 @@ function handlePost(post) {
  * Get post by title
  */
 
-function getByTitle(blog, title, callback) {
+function getByTitle(blog, title, options, callback) {
   var last_key = {};
   var last_id = null;
   var title = generateSlug(title);
-  var options = defaultOptions();
+  options = defaultOptions(options);
   options.startkey = [title,
   {}];
   options.endkey = [title, 0];
+  var viewName = "blog/title";
+  if (options.isAdmin || options.sessionUser) {
+    viewName = "blog/titleadmin";
+  }
+  db.view(viewName, options, function (err, res) {
+    if (err) throw JSON.stringify(err);
 
-  db.view("blog/title", options, function (err, res) {
     var post = res[0].value;
+
+    if (post.type === "unapproved post" && options.isAdmin !== true && post.user && options.sessionUser && post.user._id !== options.sessionUser._id) {
+      return;
+    }
+
     post = handlePost(post);
     callback(post);
   });
@@ -184,19 +198,28 @@ function getByTitle(blog, title, callback) {
  * Get posts by author
  */
 
-function getByAuthor(blog, author, callback) {
+function getByAuthor(blog, author, options, callback) {
   var last_key = {};
   var last_id = null;
   var author = generateSlug(author);
-  var options = defaultOptions();
+  options = defaultOptions(options);
   options.startkey = [author,
   {}];
   options.endkey = [author, 0];
 
-  db.view("blog/author", options, function (err, res) {
+  var viewName = "blog/author";
+  if (options.isAdmin || options.sessionUser) {
+    viewName = "blog/authoradmin";
+  }
+
+
+  db.view(viewName, options, function (err, res) {
     console.log(res);
     var posts = [];
     res.forEach(function (key, post, id) {
+      if (post.type === "unapproved post" && options.isAdmin !== true && post.user && options.sessionUser && post.user._id !== options.sessionUser._id) {
+        return;
+      }
       post = handlePost(post);
       posts.push(post);
     });
@@ -210,14 +233,12 @@ function getByAuthor(blog, author, callback) {
  * Get posts with title matching search criteria
  */
 
-function getBySearch(blog, searchQuery, callback) {
+function getBySearch(blog, searchQuery, options, callback) {
   var last_key = {};
   var last_id = null;
-  var options = {
-    descending: true
-  };
+  options = defaultOptions(options);
   searchQuery = generateSlug(searchQuery);
-  getPosts(blog, function (posts) {
+  getPosts(blog, options, function (posts) {
     var result = posts.filter(function (item) {
       //Filter out all not matching search query
       return (item.slug.match(searchQuery) || item.text.match(searchQuery, "i"));
@@ -231,20 +252,28 @@ function getBySearch(blog, searchQuery, callback) {
  * Get posts with category name
  */
 
-function getByCategory(blog, category, callback) {
+function getByCategory(blog, category, options, callback) {
   category = generateSlug(category);
 
   var last_key = {};
   var last_id = null;
-  var options = defaultOptions();
+  options = defaultOptions(options);
   options.startkey = [category,
   {}];
   options.endkey = [category, 0];
 
-  db.view("blog/category", options, function (err, res) {
+  var viewName = "blog/category";
+  if (options.isAdmin || options.sessionUser) {
+    viewName = "blog/categoryadmin";
+  }
+
+  db.view(viewName, options, function (err, res) {
     if (err) throw JSON.stringify(err);
     var posts = [];
     res.forEach(function (key, post, id) {
+      if (post.type === "unapproved post" && options.isAdmin !== true && post.user._id !== options.sessionUser._id) {
+        return;
+      }
       post = handlePost(post);
       posts.push(post);
     });
@@ -275,13 +304,8 @@ function getLatest(blog, callback) {
 
 function generateSlug(string) {
   var slug;
-  if (!string) {
-    slug = "";
-  }
-  else {
-    slug = string.replace(/[^a-zA-Z0-9]+/g, '-');
-    slug = slug.toLowerCase();
-  }
+  slug = string.replace(/[^a-zA-Z0-9]+/g, '-');
+  slug = slug.toLowerCase();
   return slug;
 }
 
@@ -301,51 +325,89 @@ function getImage(docId,imageId,out) {
   });
 }*/
 
+function convertPosterImage(originalpath, resolution, newpath, callback) {
+
+  path.exists(newpath, function (exists) {
+    if (exists) {
+      callback(null);
+    }
+    else {
+      im.convert([originalpath, '-resize', resolution, "-background", "black", "-gravity", "center", "-extent", resolution, newpath], callback);
+    }
+  });
+
+}
+
+function checkIfNeedsShrinking(filepath, resolution, callback) {
+  im.readMetadata(filepath, function (err, metadata) {
+    if (err) {
+      callback(err);
+    }
+    else {
+      var reso = resolution;
+      var resX = Number(reso.substring(0, reso.indexOf("x")));
+      var resY = Number(reso.substring(reso.indexOf("x" + 1)));
+
+      if (metadata && metadata.exif && resX >= metadata.exif.exifImageLength && resY > metadata.exif.exifImageWidth) {
+        callback(null, true);
+      }
+      else {
+        callback(null, false);
+      }
+    }
+  });
+}
+
+function shrinkBigImages(originalpath, resolution, newpath, callback) {
+
+  path.exists(filepath, function (exists) {
+    if (exists) {
+      callback(null);
+    }
+    else {
+      im.convert([originalpath, '-resize', resolution + ">", newpath], callback);
+    }
+  });
+}
+
 function getImage(options, res) {
   if (options.resolution) {
-
-
-    var pathdir = __dirname + "/files/images";
+    var user = options.user;
+    var pathdir = config.imagedir + user;
     var originalpath = pathdir + "/" + options.name;
     var filepath = pathdir + "/" + options.resolution + "!" + options.name;
 
-    im.readMetadata(originalpath, function (err, metadata) {
-      if (err) {
-
-      } else {
-        var reso = options.resolution;
-        var resX = Number(reso.substring(0, reso.indexOf("x")));
-        var resY = Number(reso.substring(reso.indexOf("x" + 1)));
-
-        if (metadata && metadata.exif && resX >= metadata.exif.exifImageLength && resY > metadata.exif.exifImageWidth) {
-          res.sendfile(originalpath);
-        }
-        else {
-          path.exists(filepath, function (exists) {
-            if (exists) {
-              res.sendfile(filepath);
-            }
-            else {
-              im.convert([originalpath, '-resize', options.resolution + ">", filepath], function (err, stdout) {
-                if (err) throw err;
-                res.sendfile(filepath);
-              });
-            }
+    if (options.poster) {
+      var filepath = pathdir + "/poster-" + options.resolution + "!" + options.name;
+      convertPosterImage(originalpath, options.resolution, filepath, function (err) {
+        if (err) throw err;
+        res.sendfile(filepath);
+      });
+    }
+    else {
+      checkIfNeedsShrinking(originalpath, options.resolution, function (err, needsShrinking) {
+        if (err) throw err;
+        if (needsShrinking) {
+          shrinkBigImages(originalpath, options.resolution, filepath, function (err) {
+            if (err) throw err;
+            res.sendfile(filepath);
           });
         }
-      }
-    });
-
-
-  } else {
-    var pathdir = __dirname + "/files/images";
+        else {
+          res.sendfile(filepath);
+        }
+      });
+    }
+  }
+  else {
+    var pathdir = config.imagedir + user;
     var filepath = pathdir + "/" + options.name;
     res.sendfile(filepath);
   }
 }
 
-function getImageList(callback) {
-  var pathdir = __dirname + "/files/images";
+function getImageList(user, callback) {
+  var pathdir = config.imagedir + user;
   fs.readdir(pathdir, function (err, files) {
     if (err) throw err;
 
@@ -356,8 +418,8 @@ function getImageList(callback) {
   })
 }
 
-function uploadImage(imageFile, callback) {
-  var pathdir = __dirname + "/files/images";
+function uploadImage(user, imageFile, callback) {
+  var pathdir = config.imagedir + user;
   var id = uuid.v4();
   console.log(imageFile.filename);
   var filename = id + path.extname(imageFile.filename);
@@ -367,12 +429,6 @@ function uploadImage(imageFile, callback) {
     console.log("File " + filepath + " uploaded");
     callback(filename, filepath, id)
   });
-/*
-  fs.rename(imageFile.path, filepath, function (err) {
-    if (err) throw err;
-    console.log("File " + filepath + " uploaded");
-    callback(filename, filepath, id)
-  });*/
 }
 
 function copyFile(src, dst, cb) {
@@ -453,65 +509,6 @@ function getPDFFile(filename, response) {
     response.end();
   });
 }
-
-
-//Basic blog template data
-var blog = {
-  title: "An (insignificantly) awesome blog",
-  about: "This is a test blog for demonstrating the sheer power that JavaScript posseses.",
-  social: [{
-    text: "Google+"
-  },
-  {
-    text: "Facebook"
-  },
-  {
-    text: "Twitter"
-  },
-  {
-    text: "LinkedIn"
-  },
-  {
-    text: "Yahoo!"
-  }],
-  nav: [{
-    text: "Home",
-    link: "/blog"
-  },
-  {
-    text: "Useless",
-    link: "#"
-  },
-  {
-    text: "Pointless",
-    link: "#"
-  },
-  {
-    text: "Will not work",
-    link: "#"
-  }],
-  categories: [{
-    text: "Articles",
-    link: "/blog/category/articles"
-  },
-  {
-    text: "Fun",
-    link: "/blog/category/fun"
-  },
-  {
-    text: "Technology",
-    link: "/blog/category/tech"
-  },
-  {
-    text: "Typography",
-    link: "/blog/category/typography"
-  },
-  {
-    text: "Martial Arts",
-    link: "/blog/category/martial-arts"
-  }]
-}
-
 
 function convertMarkdownToHTML(markdown, allowedTags, allowedAttributes, forceProtocol) {
   markdown = stripUnwantedHTML(markdown, allowedTags, allowedAttributes, forceProtocol);

@@ -1,11 +1,10 @@
 <article>
 	<h1><a href="/blog/{{slug}}">{{title}}</a></h1>
 	{{#poster}}
-	  <img src="{{posterimg}}" alt="{{altposter}}" class="poster"/>
+	  <div class="fullposter">
+	    <img src="/blog/images/poster/{{user}}/680x455!{{posterimg}}" alt="{{altposter}}"/>
+	  </div>
 	{{/poster}}
-	{{#videoposter}}
-	
-	{{/videoposter}}
 	<div class="articlecontent">
 		{{{text}}}
 	</div>
