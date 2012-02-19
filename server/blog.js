@@ -371,6 +371,8 @@ function shrinkBigImages(originalpath, resolution, newpath, callback) {
 }
 
 function getImage(options, res) {
+  var user = options.user;
+  var pathdir = config.imagedir + user;
   var originalpath = pathdir + "/" + options.name;
   path.exists(filepath, function (exists) {
     if (exists) {
@@ -381,8 +383,6 @@ function getImage(options, res) {
 
   function handleImage() {
     if (options.resolution) {
-      var user = options.user;
-      var pathdir = config.imagedir + user;
       var filepath = pathdir + "/" + options.resolution + "!" + options.name;
 
       if (options.poster) {
@@ -408,7 +408,6 @@ function getImage(options, res) {
       }
     }
     else {
-      var pathdir = config.imagedir + user;
       var filepath = pathdir + "/" + options.name;
       res.sendfile(filepath);
     }
