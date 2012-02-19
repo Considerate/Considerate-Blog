@@ -1,0 +1,31 @@
+{{#editbar}}
+<div id="editbar-container">
+<ul class="editbar">
+{{#add}}
+<li>
+  <a href="/blog/edit/new">Add</a>
+</li>
+{{/add}}
+{{#edit}}
+<li>
+  <a href="{{editLink}}">Edit</a>
+</li>
+{{/edit}}
+{{#stopedit}}
+<li>
+  <a href="{{originalLink}}">Stop editing</a>
+</li>
+{{/stopedit}}
+{{#approve}}
+<li>
+  <a id="approve-post-button">Approve post</a>
+</li>
+{{/approve}}
+{{#unapprove}}
+<li>
+  <a id="unapprove-post-button">Unapprove post</a>
+</li>
+{{/unapprove}}
+</ul>
+</div>
+{{/editbar}}      
