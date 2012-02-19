@@ -371,38 +371,47 @@ function shrinkBigImages(originalpath, resolution, newpath, callback) {
 }
 
 function getImage(options, res) {
-  if (options.resolution) {
-    var user = options.user;
-    var pathdir = config.imagedir + user;
-    var originalpath = pathdir + "/" + options.name;
-    var filepath = pathdir + "/" + options.resolution + "!" + options.name;
+  var originalpath = pathdir + "/" + options.name;
+  path.exists(filepath, function (exists) {
+    if (exists) {
+      handleImage();
+    }
+  });
 
-    if (options.poster) {
-      var filepath = pathdir + "/poster-" + options.resolution + "!" + options.name;
-      convertPosterImage(originalpath, options.resolution, filepath, function (err) {
-        if (err) throw err;
-        res.sendfile(filepath);
-      });
+
+  function handleImage() {
+    if (options.resolution) {
+      var user = options.user;
+      var pathdir = config.imagedir + user;
+      var filepath = pathdir + "/" + options.resolution + "!" + options.name;
+
+      if (options.poster) {
+        var filepath = pathdir + "/poster-" + options.resolution + "!" + options.name;
+        convertPosterImage(originalpath, options.resolution, filepath, function (err) {
+          if (err) throw err;
+          res.sendfile(filepath);
+        });
+      }
+      else {
+        checkIfNeedsShrinking(originalpath, options.resolution, function (err, needsShrinking) {
+          if (err) throw err;
+          if (needsShrinking) {
+            shrinkBigImages(originalpath, options.resolution, filepath, function (err) {
+              if (err) throw err;
+              res.sendfile(filepath);
+            });
+          }
+          else {
+            res.sendfile(filepath);
+          }
+        });
+      }
     }
     else {
-      checkIfNeedsShrinking(originalpath, options.resolution, function (err, needsShrinking) {
-        if (err) throw err;
-        if (needsShrinking) {
-          shrinkBigImages(originalpath, options.resolution, filepath, function (err) {
-            if (err) throw err;
-            res.sendfile(filepath);
-          });
-        }
-        else {
-          res.sendfile(filepath);
-        }
-      });
+      var pathdir = config.imagedir + user;
+      var filepath = pathdir + "/" + options.name;
+      res.sendfile(filepath);
     }
-  }
-  else {
-    var pathdir = config.imagedir + user;
-    var filepath = pathdir + "/" + options.name;
-    res.sendfile(filepath);
   }
 }
 
