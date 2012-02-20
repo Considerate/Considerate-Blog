@@ -383,8 +383,9 @@ function getImage(options, res) {
           if (!err) {
             if (needsShrinking) {
               shrinkBigImages(originalpath, options.resolution, filepath, function (err) {
-                if (err) throw err;
-                res.sendfile(filepath);
+                if (!err) {
+                  res.sendfile(filepath);
+                }
               });
             }
             else {
