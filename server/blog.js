@@ -362,6 +362,10 @@ function getImage(options, res) {
     if (exists) {
       handleImage();
     }
+    else {
+      console.log("Could not file file",originalpath);
+      res.send(404);
+    }
   });
 
 
