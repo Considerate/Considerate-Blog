@@ -375,6 +375,8 @@ function getImage(options, res) {
         convertPosterImage(originalpath, options.resolution, filepath, function (err) {
           if (!err) {
             res.sendfile(filepath);
+          } else {
+            res.send(404);
           }
         });
       }
@@ -387,10 +389,16 @@ function getImage(options, res) {
                   res.sendfile(filepath);
                 }
               });
+              else {
+                res.send(404);
+              }
             }
             else {
               res.sendfile(filepath);
             }
+          }
+          else {
+            res.send(404);
           }
         });
       }
