@@ -57,7 +57,7 @@ app.post('/login', function (req, res) {
       return;
     }
     req.session.user = user;
-    console.log(req.session.user);
+    console.log("Session",req.session.user);
     if (req.body.redir) {
       res.redirect(req.body.redir);
     }
