@@ -533,7 +533,7 @@ function convertMarkdownToHTML(markdown, allowedTags, allowedAttributes, forcePr
       //if link is only ID (ie. contains no '/')
       link = "http://www.youtube.com/embed/" + link;
     }
-    var embed = '<iframe width="853" height="480" src="' + link + '" frameborder="0" allowfullscreen></iframe>';
+    var embed = '<iframe width="640" height="360" src="' + link + '" frameborder="0" allowfullscreen></iframe>';
     return embed;
   }
   //From coappcms
