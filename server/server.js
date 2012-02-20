@@ -39,10 +39,13 @@ app.get('/login', function (req, res) {
 app.get('/login/redir/*', function (req, res) {
   if (req.session && req.session.user) {
     res.redirect(req.params[0]);
+    return;
   }
-  else {
-    res.redirect("/login");
-  }
+  res.render('login.html', {
+    locals: {
+      redir: req.params[0]
+    }
+  });
 });
 
 app.post('/login', function (req, res) {
