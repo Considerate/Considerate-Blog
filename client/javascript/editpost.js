@@ -140,7 +140,7 @@
         key: 'V',
         openWith: '%[',
         closeWith: '[![Url:!:http://]!]]',
-        placeHolder: 'Your text to link here...'
+        placeHolder: ''
       },]
     }
   }
