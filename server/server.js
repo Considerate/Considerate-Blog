@@ -57,10 +57,10 @@ app.post('/login', function (req, res) {
     req.session.user = user;
     console.log("Session", req.session.user);
     if (req.body.redir) {
-      //res.redirect(req.body.redir);
+      res.redirect(req.body.redir);
     }
     else {
-      //res.redirect("/blog");
+      res.redirect("/blog");
     }
   });
 });
