@@ -31,12 +31,12 @@ var app = express.createServer();
 var RedisStore = require('connect-redis')(express);
 
 app.configure(function () {
-  app.use(express.bodyParser());
-  app.use(express.cookieParser());
   app.use(express.session({
     secret: "th30n3andonlypassw0rd",
     store: RedisStore
   }));
+  app.use(express.bodyParser());
+  app.use(express.cookieParser());
   //app.use(app.router);
   app.use(express.static(__dirname + '/../client'));
   app.set("views", __dirname + "/templates");
