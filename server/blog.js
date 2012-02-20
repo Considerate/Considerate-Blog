@@ -388,10 +388,10 @@ function getImage(options, res) {
                 if (!err) {
                   res.sendfile(filepath);
                 }
+                else {
+                  res.send(404);
+                }
               });
-              else {
-                res.send(404);
-              }
             }
             else {
               res.sendfile(filepath);
