@@ -137,7 +137,7 @@
       },
       {
         name: 'Video',
-        key: 'V',
+        key: 'M',
         openWith: '%[',
         closeWith: '[![Url:!:http://]!]]',
         placeHolder: ''
