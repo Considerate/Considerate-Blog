@@ -13,20 +13,20 @@ var partials = {
 }
 
 function requiresLogin(req, res, next) {
-  console.log(req.sessionStore);
   console.log(req.session);
   console.log(req.session.user);
   if (req.session.user) {
     console.log(req.session.user);
     next();
   } else {
-    //res.redirect('/login/redir/' + req.url);
+    res.redirect('/login/redir/' + req.url);
   }
 }
 
 app.get('/login/redir/*', function (req, res) {
   if (req.session && req.session.user) {
     res.redirect(req.params[0]);
+    return;
   }
   res.render('login.html', {
     locals: {
@@ -35,17 +35,6 @@ app.get('/login/redir/*', function (req, res) {
   });
 });
 
-app.get('/login', function (req, res) {
-  if (req.session && req.session.user) {
-    //res.redirect('/blog');
-    return;
-  }
-  res.render('login.html', {
-    locals: {
-      redir: ""
-    }
-  });
-});
 
 app.post('/login', function (req, res) {
   var pass = hashlib.sha1(req.body.password);
