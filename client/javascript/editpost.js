@@ -119,7 +119,7 @@
         name: 'Video',
         key: 'V',
         openWith: '%[',
-        closeWith: '[![Enter Youtube Link URL:!:http://]!]]',
+        closeWith: '[![URL:!:http://]!]]',
         placeHolder: ''
       },
       {
