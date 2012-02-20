@@ -19,14 +19,14 @@ function requiresLogin(req, res, next) {
     console.log(req.session.user);
     next();
   } else {
-    //res.redirect('/login/redir/' + req.url);
+    res.redirect('/login/redir/' + req.url);
   }
 }
 
 app.get('/login', function (req, res) {
   if (req.session && req.session.user) {
-    //res.redirect('/blog');
-    //return;
+    res.redirect('/blog');
+    return;
   }
   res.render('login.html', {
     locals: {
@@ -52,23 +52,23 @@ app.post('/login', function (req, res) {
   blogEngine.authenticate(req.body.user, pass, function (err, user) {
     if (err) {
       console.log(err);
-      res.end(err.message, 401);
+      res.send(err.message, 401);
       return;
     }
     req.session.user = user;
     console.log(req.session.user);
     if (req.body.redir) {
-      //res.redirect(req.body.redir);
+      res.redirect(req.body.redir);
     }
     else {
-      //res.redirect("/blog");
+      res.redirect("/blog");
     }
   });
 });
 
 app.get('/logout', function (req, res) {
   req.session.user = null;
-  //res.redirect('/login');
+  res.redirect('/login');
 });
 
 
