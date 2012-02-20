@@ -58,17 +58,17 @@ app.post('/login', function (req, res) {
     req.session.user = user;
     console.log(req.session.user);
     if (req.body.redir) {
-      res.redirect(req.body.redir);
+      //res.redirect(req.body.redir);
     }
     else {
-      res.redirect("/blog");
+      //res.redirect("/blog");
     }
   });
 });
 
 app.get('/logout', function (req, res) {
   req.session.user = null;
-  res.redirect('/login');
+  //res.redirect('/login');
 });
 
 
