@@ -529,8 +529,6 @@ function convertMarkdownToHTML(markdown, allowedTags, allowedAttributes, forcePr
   return markdown;
 
   function youtubeEmbed(link) {
-    var link = "http://www.youtube.com/embed/NtzDtV2Jbk8";
-
     if (link.indexOf("/") === -1) {
       //if link is only ID (ie. contains no '/')
       link = "http://www.youtube.com/embed/" + link;
