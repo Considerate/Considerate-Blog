@@ -529,7 +529,7 @@ function convertMarkdownToHTML(markdown, allowedTags, allowedAttributes, forcePr
   return markdown;
 
   function youtubeEmbed(link) {
-    var url = require(url);
+    var url = require("url");
     var linkobj;
     
     if (link.indexOf("/") === -1) {
