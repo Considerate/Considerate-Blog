@@ -116,13 +116,6 @@
         placeHolder: 'Your text to link here...'
       },
       {
-        name: 'Video',
-        key: 'V',
-        openWith: '[',
-        closeWith: ']([![Url:!:http://]!] "[![Title]!]")',
-        placeHolder: 'Your text to link here...'
-      },
-      {
         separator: '---------------'
       },
       {
@@ -141,7 +134,14 @@
         name: 'Preview',
         call: 'preview',
         className: "preview"
-      }]
+      },
+      {
+        name: 'Video',
+        key: 'V',
+        openWith: '[',
+        closeWith: ']([![Url:!:http://]!] "[![Title]!]")',
+        placeHolder: 'Your text to link here...'
+      },]
     }
   }
   
