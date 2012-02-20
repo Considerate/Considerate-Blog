@@ -538,6 +538,7 @@ function convertMarkdownToHTML(markdown, allowedTags, allowedAttributes, forcePr
     }
     else {
       linkobj = url.parse(link,true);
+      console.log(linkobj);
       link = "http://www.youtube.com/embed/" + linkobj.v;
     }
     var embed = '<iframe width="640" height="360" src="' + link + '" frameborder="0" allowfullscreen></iframe>';
