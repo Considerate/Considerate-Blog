@@ -13,6 +13,7 @@ var partials = {
 }
 
 function requiresLogin(req, res, next) {
+  console.log(req);
   console.log(req.session.user);
   if (req.session.user) {
     console.log(req.session.user);
