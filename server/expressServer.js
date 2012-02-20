@@ -28,14 +28,18 @@ var tmpl = {
 
 var app = express.createServer();
 
-var RedisStore = require('connect-redis')(express);
+var ConnectCouchDB = require('connect-couchdb')(express);
+
+var store = new ConnectCouchDB({
+  name: 'gogoblog-session',
+});
 
 app.configure(function () {
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.session({
     secret: "th30n3andonlypassw0rd"
-    ,store: new RedisStore
+    ,store: store
   }));
   app.use(app.router);
   app.use(express.static(__dirname + '/../client'));
