@@ -25,8 +25,8 @@ function requiresLogin(req, res, next) {
 
 app.get('/login', function (req, res) {
   if (req.session && req.session.user) {
-    res.redirect('/blog');
-    return;
+    //res.redirect('/blog');
+    //return;
   }
   res.render('login.html', {
     locals: {
