@@ -363,7 +363,7 @@ function getImage(options, res) {
       handleImage();
     }
   });
- 
+
 
 
   function handleImage() {
@@ -373,21 +373,23 @@ function getImage(options, res) {
       if (options.poster) {
         var filepath = pathdir + "/poster-" + options.resolution + "!" + options.name;
         convertPosterImage(originalpath, options.resolution, filepath, function (err) {
-          if (err) throw err;
-          res.sendfile(filepath);
+          if (!err) {
+            res.sendfile(filepath);
+          }
         });
       }
       else {
         checkIfNeedsShrinking(originalpath, options.resolution, function (err, needsShrinking) {
-          if (err) throw err;
-          if (needsShrinking) {
-            shrinkBigImages(originalpath, options.resolution, filepath, function (err) {
-              if (err) throw err;
+          if (!err) {
+            if (needsShrinking) {
+              shrinkBigImages(originalpath, options.resolution, filepath, function (err) {
+                if (err) throw err;
+                res.sendfile(filepath);
+              });
+            }
+            else {
               res.sendfile(filepath);
-            });
-          }
-          else {
-            res.sendfile(filepath);
+            }
           }
         });
       }
@@ -512,12 +514,12 @@ function convertMarkdownToHTML(markdown, allowedTags, allowedAttributes, forcePr
 
   function youtubeEmbed(link) {
     var link = "http://www.youtube.com/embed/NtzDtV2Jbk8";
-    
-    if(link.indexOf("/") === -1) {
+
+    if (link.indexOf("/") === -1) {
       //if link is only ID (ie. contains no '/')
-      link = "http://www.youtube.com/embed/"+link;
+      link = "http://www.youtube.com/embed/" + link;
     }
-    var embed = '<iframe width="853" height="480" src="'+link+'" frameborder="0" allowfullscreen></iframe>';
+    var embed = '<iframe width="853" height="480" src="' + link + '" frameborder="0" allowfullscreen></iframe>';
     return embed;
   }
   //From coappcms
