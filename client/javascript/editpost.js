@@ -39,10 +39,6 @@
         key: '2',
         openWith: '## ',
         placeHolder: 'Your title here...'
-/*,
-        closeWith: function (markItUp) {
-          return miu.markdownTitle(markItUp, '-')
-        }*/
       },
       {
         name: 'Heading 3',
@@ -118,6 +114,13 @@
         openWith: '[',
         closeWith: ']([![Url:!:http://]!] "[![Title]!]")',
         placeHolder: 'Your text to link here...'
+      },
+      {
+        name: 'Video',
+        key: 'V',
+        openWith: '[',
+        closeWith: '](%[![Enter Youtube Link URL:!:http://]!])',
+        placeHolder: ''
       },
       {
         separator: '---------------'
