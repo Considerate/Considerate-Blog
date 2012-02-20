@@ -28,7 +28,7 @@ var tmpl = {
 
 var app = express.createServer();
 
-var RedisStore = require('connect-redis')(app);
+var RedisStore = require('connect-redis')(express);
 
 app.configure(function () {
   app.use(express.bodyParser());
