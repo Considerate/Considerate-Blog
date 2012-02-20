@@ -13,11 +13,7 @@ var partials = {
 }
 
 function requiresLogin(req, res, next) {
-  console.log(req.sessionStore);
-  console.log(req.session);
-  console.log(req.session.user);
   if (req.session.user) {
-    console.log(req.session.user);
     next();
   } else {
     res.redirect('/login/redir/' + req.url);
@@ -27,25 +23,27 @@ function requiresLogin(req, res, next) {
 app.get('/login', function (req, res) {
   if (req.session && req.session.user) {
     res.redirect('/blog');
-    return;
   }
-  res.render('login.html', {
-    locals: {
-      redir: ""
-    }
-  });
+  else {
+    res.render('login.html', {
+      locals: {
+        redir: ""
+      }
+    });
+  }
 });
 
 app.get('/login/redir/*', function (req, res) {
   if (req.session && req.session.user) {
     res.redirect(req.params[0]);
-    return;
   }
-  res.render('login.html', {
-    locals: {
-      redir: req.params[0]
-    }
-  });
+  else {
+    res.render('login.html', {
+      locals: {
+        redir: req.params[0]
+      }
+    });
+  }
 });
 
 app.post('/login', function (req, res) {
@@ -57,7 +55,7 @@ app.post('/login', function (req, res) {
       return;
     }
     req.session.user = user;
-    console.log("Session",req.session.user);
+    console.log("Session", req.session.user);
     if (req.body.redir) {
       res.redirect(req.body.redir);
     }
@@ -107,8 +105,8 @@ app.get("/blog", function (req, res) {
     //pagination: true
   };
 
-  if(req.session.user) {
-    if(req.session.user.admin === true) {
+  if (req.session.user) {
+    if (req.session.user.admin === true) {
       options.isAdmin = true;
     }
     options.sessionUser = req.session.user;
@@ -120,17 +118,17 @@ app.get("/blog", function (req, res) {
     posts.forEach(function (post) {
       if (post) {
         post.text = post.shorttext;
-        if(post.type === "unapproved post") {
+        if (post.type === "unapproved post") {
           post.unapproved = "unapproved";
         }
       }
     });
 
     renderData.posts = posts;
-    
-    if(req.session.user) {
+
+    if (req.session.user) {
       renderData.editbar = {
-        add:true
+        add: true
       };
     }
 
@@ -146,8 +144,8 @@ app.get("/blog/more", function (req, res) {
   var options = {
     pagination: true
   };
-  if(req.session.user) {
-    if(req.session.user.admin === true) {
+  if (req.session.user) {
+    if (req.session.user.admin === true) {
       options.isAdmin = true;
     }
     options.sessionUser = req.session.user;
@@ -195,18 +193,18 @@ app.post("/blog/edit/new", requiresLogin, function (req, res) {
 app.get("/blog/edit/:post", requiresLogin, function (req, res) {
   var postName = req.params.post;
   var options = {};
-  if(req.session.user) {
-    if(req.session.user.admin === true) {
+  if (req.session.user) {
+    if (req.session.user.admin === true) {
       options.isAdmin = true;
     }
     options.sessionUser = req.session.user;
   }
-  blogEngine.getByTitle(blog, postName, options,function (post) {
+  blogEngine.getByTitle(blog, postName, options, function (post) {
     post.nav = blog.nav;
     post.titleLink = req.url;
     post.originalLink = "/blog/" + postName;
     post.editbar = {
-     stopedit: true 
+      stopedit: true
     }
     post.heading = "Edit post";
     res.render("editpost.html", {
@@ -219,13 +217,13 @@ app.get("/blog/edit/:post", requiresLogin, function (req, res) {
 app.post("/blog/edit/:post", requiresLogin, function (req, res) {
   var postName = req.params.post;
   var options = {};
-   if(req.session.user) {
-     if(req.session.user.admin === true) {
-       options.isAdmin = true;
-     }
-     options.sessionUser = req.session.user;
-   }
-  blogEngine.getByTitle(blog, postName, options,function (post) {
+  if (req.session.user) {
+    if (req.session.user.admin === true) {
+      options.isAdmin = true;
+    }
+    options.sessionUser = req.session.user;
+  }
+  blogEngine.getByTitle(blog, postName, options, function (post) {
     post.title = req.body.posttitle;
     post.markdown = req.body.postbody;
     post.author = req.session.user.name;
@@ -317,12 +315,12 @@ app.post("/blog/image", requiresLogin, function (req, res) {
 app.get("/blog/category/:category", function (req, res) {
   var category = req.params.category;
   var options = {};
-   if(req.session.user) {
-     if(req.session.user.admin === true) {
-       options.isAdmin = true;
-     }
-     options.sessionUser = req.session.user;
-   }
+  if (req.session.user) {
+    if (req.session.user.admin === true) {
+      options.isAdmin = true;
+    }
+    options.sessionUser = req.session.user;
+  }
   blogEngine.getByCategory(blog, category, options, function (posts) {
     var page = blog;
     page.titleLink = req.url;
@@ -338,13 +336,13 @@ app.get("/blog/category/:category", function (req, res) {
 app.get("/blog/author/:author", function (req, res) {
   var author = req.params.author;
   var options = {};
-   if(req.session.user) {
-     if(req.session.user.admin === true) {
-       options.isAdmin = true;
-     }
-     options.sessionUser = req.session.user;
-   }
-  blogEngine.getByAuthor(blog, author, options,function (posts) {
+  if (req.session.user) {
+    if (req.session.user.admin === true) {
+      options.isAdmin = true;
+    }
+    options.sessionUser = req.session.user;
+  }
+  blogEngine.getByAuthor(blog, author, options, function (posts) {
     var page = blog;
     page.titleLink = req.url;
     page.posts = posts;
@@ -358,12 +356,12 @@ app.get("/blog/author/:author", function (req, res) {
 
 app.get("/blog/search", function (req, res) {
   var options = {};
-   if(req.session.user) {
-     if(req.session.user.admin === true) {
-       options.isAdmin = true;
-     }
-     options.sessionUser = req.session.user;
-   }
+  if (req.session.user) {
+    if (req.session.user.admin === true) {
+      options.isAdmin = true;
+    }
+    options.sessionUser = req.session.user;
+  }
   blogEngine.getPosts(blog, options, function (posts) {
     var page = blog;
     page.titleLink = req.url;
@@ -379,12 +377,12 @@ app.get("/blog/search", function (req, res) {
 app.get("/blog/search/:query", function (req, res) {
   var query = req.params.query;
   var options = {};
-   if(req.session.user) {
-     if(req.session.user.admin === true) {
-       options.isAdmin = true;
-     }
-     options.sessionUser = req.session.user;
-   }
+  if (req.session.user) {
+    if (req.session.user.admin === true) {
+      options.isAdmin = true;
+    }
+    options.sessionUser = req.session.user;
+  }
   blogEngine.getBySearch(blog, query, options, function (posts) {
     var page = blog;
     page.titleLink = req.url;
@@ -400,22 +398,22 @@ app.get("/blog/search/:query", function (req, res) {
 app.get("/blog/:post", function (req, res) {
   var postName = req.params.post;
   var options = {};
-   if(req.session.user) {
-     if(req.session.user.admin === true) {
-       options.isAdmin = true;
-     }
-     options.sessionUser = req.session.user;
-   }
+  if (req.session.user) {
+    if (req.session.user.admin === true) {
+      options.isAdmin = true;
+    }
+    options.sessionUser = req.session.user;
+  }
   blogEngine.getByTitle(blog, postName, options, function (post) {
     post.nav = blog.nav;
     post.titleLink = req.url;
     post.editLink = "/blog/edit/" + postName;
-    if(req.session.user) {
+    if (req.session.user) {
       post.editbar = {
         edit: true
       };
-      if(req.session.user.admin === true) {
-        if(post.type === "unapproved post") {
+      if (req.session.user.admin === true) {
+        if (post.type === "unapproved post") {
           post.editbar.approve = true;
         }
         else {
@@ -435,4 +433,4 @@ app.get("/blog/:post", function (req, res) {
 var port = process.env.PORT || 80;
 app.listen(port, function () {
   console.log("Listening on " + port);
-}); 
+});
