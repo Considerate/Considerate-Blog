@@ -14,6 +14,7 @@ var partials = {
 
 function requiresLogin(req, res, next) {
   if (req.session.user) {
+    console.log(req.session.user);
     next();
   } else {
     res.redirect('/login/redir/' + req.url);
@@ -121,7 +122,6 @@ app.get("/blog", function (req, res) {
     });
 
     renderData.posts = posts;
-    console.log(posts);
     
     if(req.session.user) {
       renderData.editbar = {
@@ -409,7 +409,6 @@ app.get("/blog/:post", function (req, res) {
       post.editbar = {
         edit: true
       };
-      console.log(req.session.user);
       if(req.session.user.admin === true) {
         if(post.type === "unapproved post") {
           post.editbar.approve = true;
@@ -418,7 +417,6 @@ app.get("/blog/:post", function (req, res) {
           post.editbar.unapprove = true;
         }
       }
-      console.log(post.editbar);
     }
 
     res.render("post.html", {
