@@ -401,6 +401,7 @@ function getImage(options, res) {
           }
           else {
             res.send(404);
+            console.log("Failed to shrink",originalpath);
           }
         });
       }
