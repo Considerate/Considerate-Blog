@@ -376,6 +376,7 @@ function getImage(options, res) {
           if (!err) {
             res.sendfile(filepath);
           } else {
+            console.log("Failed to convert poster",originalpath);
             res.send(404);
           }
         });
@@ -389,6 +390,7 @@ function getImage(options, res) {
                   res.sendfile(filepath);
                 }
                 else {
+                  console.log("Failed to shrink",originalpath);
                   res.send(404);
                 }
               });
