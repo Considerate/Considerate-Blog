@@ -52,7 +52,7 @@ app.post('/login', function (req, res) {
   blogEngine.authenticate(req.body.user, pass, function (err, user) {
     if (err) {
       console.log(err);
-      res.send(err.message, 401);
+      res.end(err.message, 401);
       return;
     }
     req.session.user = user;
