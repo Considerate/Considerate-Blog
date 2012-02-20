@@ -308,22 +308,6 @@ function generateSlug(string) {
   return slug;
 }
 
-
-/**
- * Get an image from the database
- */
-/*
-function getImage(docId,imageId,out) {
-	var streamer;
-	streamer = db.getAttachment(docId,imageId);
-  streamer.addListener('data', function (chunk) { 
-	  out.write(chunk, "binary");
-  });
-  streamer.addListener('end', function () {
-    out.end()
-  });
-}*/
-
 function convertPosterImage(originalpath, resolution, newpath, callback) {
 
   path.exists(newpath, function (exists) {
@@ -373,11 +357,13 @@ function getImage(options, res) {
   var user = options.user;
   var pathdir = config.imagedir + user;
   var originalpath = pathdir + "/" + options.name;
+  console.log("Image", options);
   path.exists(originalpath, function (exists) {
     if (exists) {
       handleImage();
     }
   });
+ 
 
 
   function handleImage() {
