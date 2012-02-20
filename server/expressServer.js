@@ -37,7 +37,7 @@ app.configure(function () {
     secret: "th30n3andonlypassw0rd",
     store: RedisStore
   }));
-  app.use(app.router);
+  //app.use(app.router);
   app.use(express.static(__dirname + '/../client'));
   app.set("views", __dirname + "/templates");
   app.set("view options", {
