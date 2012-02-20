@@ -47,7 +47,7 @@ app.configure(function () {
 });
 
 app.configure(function () {
-  app.use(chromeframe());
+  //app.use(chromeframe());
 });
 
 
