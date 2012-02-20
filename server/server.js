@@ -49,6 +49,7 @@ app.post('/login', function (req, res) {
   var pass = hashlib.sha1(req.body.password);
   blogEngine.authenticate(req.body.user, pass, function (err, user) {
     if (err) {
+      console.log(err);
       res.send(err.message, 401);
       return;
     }

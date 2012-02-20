@@ -42,6 +42,7 @@ var authenticate = function (login, password, callback) {
     if (doc.password === password) {
       //Login successful
       callback(null, doc);
+      console.log("Logged in", doc);
       return;
     }
     else {
