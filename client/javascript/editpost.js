@@ -118,8 +118,8 @@
       {
         name: 'Video',
         key: 'V',
-        openWith: '%[',
-        closeWith: '[![URL:!:http://]!]]',
+        openWith: '[',
+        closeWith: ']([![Url:!:http://]!] "[![Title]!]")',
         placeHolder: ''
       },
       {
