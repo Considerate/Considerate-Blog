@@ -525,28 +525,26 @@ function convertMarkdownToHTML(markdown, allowedTags, allowedAttributes, forcePr
   markdown = handleMarkdownTables(markdown);
   return markdown;
 
-
+  function youtubeEmbed(link) {
+    var link = "http://www.youtube.com/embed/NtzDtV2Jbk8";
+    
+    if(link.indexOf("/") === -1) {
+      //if link is only ID (ie. contains no '/')
+      link = "http://www.youtube.com/embed/"+link;
+    }
+    var embed = '<iframe width="853" height="480" src="'+link+'" frameborder="0" allowfullscreen></iframe>';
+    return embed;
+  }
   //From coappcms
 
   function handleCustomTags(markdown) {
     // handle my custom video inserts
-    // %[webmurl]
-    markdown = markdown.replace(/%\[\s*(.*)\s*]/gi, function (p0, p1, p2, p3) {
+    // %[youtubelink]
+    markdown = markdown.replace(/%\[\s*(.*)\s*]/gi, function (p0, link) {
       var videourlmp4 = "";
-      var videourlwebm = p1;
+      var videourlwebm = link;
       var imageurl = "";
-
-      return '\n<div class="embeddedvideo">\n<video width="100%" height="100%" poster="' + imageurl + '" controls="controls" style="width:100%; height:100%; background: black;">' + '    <source type="video/webm" src="' + videourlwebm + '" />' + '</video>\n</div>\n';
-    });
-
-    // %[webmurl,posterimageurl,mp4url]
-    markdown = markdown.replace(/%\[\s*(.*)\s*,?\s*(.*)\s*,?\s*(.*)\s*]/gi, function (p0, p1, p2, p3) {
-      var videourlmp4 = p3;
-      var videourlwebm = p1;
-      var imageurl = p2;
-
-      return '\n<div class="embeddedvideo">\n<video width="100%" height="100%" poster="' + imageurl + '" controls="controls" preload="none" style="width:100%; height:100%;">' + '    <source type="video/mp4" src="' + videourlmp4 + '" />' + '    <source type="video/webm" src="' + videourlwebm + '" />' + '    <object width="' + 640 + '" height="' + 480 + '" type="application/x-shockwave-flash" data="/scripts/flashmediaelement.swf">' + '        <param name="movie" value="/scripts/flashmediaelement.swf" />' + '        <param name="flashvars" value="controls=true&file=' + videourlmp4 + '" />' + '        <img src="' + imageurl + '" width="' + 640 + '" height="' + 480 + '" title="No video playback capabilities" />' + //Image as a last resort 
-      '    </object>' + '</video>\n</div>\n';
+      return youtubeEmbed(link);
     });
 
     return markdown;
