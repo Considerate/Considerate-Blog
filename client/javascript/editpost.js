@@ -120,7 +120,7 @@
         key: 'V',
         openWith: '[',
         closeWith: ']([![Url:!:http://]!] "[![Title]!]")',
-        placeHolder: ''
+        placeHolder: 'Your text to link here...'
       },
       {
         separator: '---------------'
