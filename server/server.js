@@ -20,13 +20,13 @@ function requiresLogin(req, res, next) {
     console.log(req.session.user);
     next();
   } else {
-    res.redirect('/login/redir/' + req.url);
+    //res.redirect('/login/redir/' + req.url);
   }
 }
 
 app.get('/login', function (req, res) {
   if (req.session && req.session.user) {
-    res.redirect('/blog');
+    //res.redirect('/blog');
     return;
   }
   res.render('login.html', {
