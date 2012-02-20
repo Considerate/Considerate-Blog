@@ -35,7 +35,7 @@ app.configure(function () {
   app.use(express.cookieParser());
   app.use(express.session({
     secret: "th30n3andonlypassw0rd"
-    //,store: RedisStore
+    ,store: new RedisStore
   }));
   app.use(app.router);
   app.use(express.static(__dirname + '/../client'));
