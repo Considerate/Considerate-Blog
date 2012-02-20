@@ -24,18 +24,6 @@ function requiresLogin(req, res, next) {
   }
 }
 
-app.get('/login', function (req, res) {
-  if (req.session && req.session.user) {
-    //res.redirect('/blog');
-    return;
-  }
-  res.render('login.html', {
-    locals: {
-      redir: ""
-    }
-  });
-});
-
 app.get('/login/redir/*', function (req, res) {
   if (req.session && req.session.user) {
     res.redirect(req.params[0]);
@@ -44,6 +32,18 @@ app.get('/login/redir/*', function (req, res) {
   res.render('login.html', {
     locals: {
       redir: req.params[0]
+    }
+  });
+});
+
+app.get('/login', function (req, res) {
+  if (req.session && req.session.user) {
+    //res.redirect('/blog');
+    return;
+  }
+  res.render('login.html', {
+    locals: {
+      redir: ""
     }
   });
 });
