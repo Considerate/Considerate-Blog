@@ -19,7 +19,7 @@ function requiresLogin(req, res, next) {
     console.log(req.session.user);
     next();
   } else {
-    res.redirect('/login/redir/' + req.url);
+    //res.redirect('/login/redir/' + req.url);
   }
 }
 
