@@ -332,17 +332,6 @@ function checkIfNeedsShrinking(filepath, resolution, callback) {
       var resX = Number(strX);
       var strY = reso.substring(reso.indexOf("x") + 1);
       var resY = Number(strY);
-
-      console.log({
-        sx: strX,
-        sy: strY
-      });
-      console.log({
-        x: resX,
-        y: resY
-      });
-      
-      console.log(metadata);
       if (!metadata || !metadata.exif) {
         callback(null, false);
       }
@@ -351,7 +340,6 @@ function checkIfNeedsShrinking(filepath, resolution, callback) {
           x: metadata.exif.exifImageLength,
           y: metadata.exif.exifImageWidth
         };
-        console.log(imageRes);
         if (resX < imageRes.x || resY < imageRes.y) {
           callback(null, true);
         }
@@ -379,7 +367,6 @@ function getImage(options, res) {
   var user = options.user;
   var pathdir = config.imagedir + user;
   var originalpath = pathdir + "/" + options.name;
-  console.log("Image", options);
   path.exists(originalpath, function (exists) {
     if (exists) {
       handleImage();
@@ -394,10 +381,8 @@ function getImage(options, res) {
 
   function handleImage() {
 
-    console.log("Handling image…");
     if (options.resolution) {
       var filepath = pathdir + "/" + options.resolution + "!" + options.name;
-
       if (options.poster) {
         var filepath = pathdir + "/poster-" + options.resolution + "!" + options.name;
         convertPosterImage(originalpath, options.resolution, filepath, function (err) {
