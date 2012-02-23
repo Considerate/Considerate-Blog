@@ -160,7 +160,7 @@ function getPosts(blog, options, callback) {
       });
     }
 
-    callback(posts,startindex+posts.length,startindex);
+    callback(posts,startindex+posts.length+1,startindex);
   });
 }
 
