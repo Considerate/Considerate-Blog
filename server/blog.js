@@ -142,8 +142,12 @@ function getPosts(blog, options, callback) {
           if (options.isAdmin !== true) {
             if (post.user && options.sessionUser) {
               if (post.user._id !== options.sessionUser._id) {
+                console.log("Removing post")
                 return;
               }
+            }
+            else {
+              return;
             }
           }
         }
