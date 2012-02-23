@@ -371,11 +371,15 @@ app.get("/blog/search", function (req, res) {
     var page = blog;
     page.titleLink = req.url;
     page.posts = posts;
-
-    res.render("blog.html", {
-      locals: page,
-      partials: partials
+    
+    blogEngine.getLatest(blog, function (latest) {
+      page.latest = latest;
+      res.render("blog.html", {
+        locals: page,
+        partials: partials
+      });
     });
+  
   });
 });
 
