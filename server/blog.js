@@ -263,8 +263,8 @@ function getBySearch(blog, searchQuery, options, callback) {
     "type": "gogotype",
     "from": startindex,
     "size": size,
-    "text": {
-      "_all": searchQuery
+    "query_string": {
+      "query": searchQuery
     },
     "filter": {
       "term": {
