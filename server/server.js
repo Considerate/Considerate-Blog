@@ -143,17 +143,11 @@ app.get("/blog", function (req, res) {
 
 });
 
-app.get("/blog/more", function (req, res) {
+app.get("/blog/more/:fromindex", function (req, res) {
   var options = {
-    pagination: true
+    from: req.params.fromindex
   };
-  if (req.session.user) {
-    if (req.session.user.admin === true) {
-      options.isAdmin = true;
-    }
-    options.sessionUser = req.session.user;
-  }
-  blogEngine.getPosts(blog, function (posts, latest) {
+  blogEngine.getPosts(blog, options, function (posts, latest) {
     var renderData = blog;
     renderData.titleLink = req.url;
     renderData.posts = posts;
@@ -161,7 +155,7 @@ app.get("/blog/more", function (req, res) {
       locals: renderData,
       partials: partials
     });
-  }, options);
+  });
 });
 
 app.get("/blog/edit/new", requiresLogin, function (req, res) {

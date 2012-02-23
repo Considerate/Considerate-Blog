@@ -118,8 +118,8 @@ function getPosts(blog, options, callback) {
   client.search({
     index: "gogoblog",
     type: "gogoblog",
-    "from": 0,
-    "size": 5,
+    "from": options.from || 0,
+    "size": options.size || 5,
     query: {
       "match_all": {}
     },
