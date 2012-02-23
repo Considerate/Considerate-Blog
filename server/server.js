@@ -284,6 +284,7 @@ app.get("/blog/images/poster/:user/:image", function (req, res) {
 app.get("/blog/images/:user/:image(*)", function (req, res) {
   var imageName = req.params.image;
   var user = req.params.user;
+  console.log("Image URL Found");
   var index = imageName.indexOf("!");
   if (index !== -1) {
     var resolution = imageName.substring(0, index);
