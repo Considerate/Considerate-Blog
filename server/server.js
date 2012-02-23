@@ -111,7 +111,7 @@ app.get("/blog", function (req, res) {
     }
     options.sessionUser = req.session.user;
   }
-  blogEngine.getPosts(blog, function (posts) {
+  blogEngine.getPosts(blog, options, function (posts) {
     var renderData = blog;
     renderData.titleLink = req.url;
 
@@ -139,7 +139,7 @@ app.get("/blog", function (req, res) {
       });
     });
 
-  }, options);
+  });
 
 });
 
@@ -371,7 +371,7 @@ app.get("/blog/search", function (req, res) {
     var page = blog;
     page.titleLink = req.url;
     page.posts = posts;
-    
+
     blogEngine.getLatest(blog, function (latest) {
       page.latest = latest;
       res.render("blog.html", {
@@ -379,7 +379,7 @@ app.get("/blog/search", function (req, res) {
         partials: partials
       });
     });
-  
+
   });
 });
 

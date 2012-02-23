@@ -107,7 +107,7 @@ function beforeSave(post) {
   return post;
 }
 
-function getPosts(blog, callback, options) {
+function getPosts(blog, options, callback) {
   options = defaultOptions(options);
 
   var viewName = "blog/all";
@@ -116,9 +116,13 @@ function getPosts(blog, callback, options) {
   }
 
   client.search({
-      query: {query_string: {query: 'welcome'}}
+    query: {
+      query_string: {
+        query: 'welcome'
+      }
+    }
   }, function (err, results, res) {
-      // ...
+    // ...
   });
 
   db.view(viewName, options, function (err, res) {
