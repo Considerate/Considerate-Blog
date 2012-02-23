@@ -103,7 +103,7 @@ app.get("/blog", function (req, res) {
   var options = {
     language: req.session.language
   };
-
+  console.log(options);
   if (req.session.user) {
     if (req.session.user.admin === true) {
       options.isAdmin = true;
