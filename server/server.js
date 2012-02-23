@@ -382,6 +382,7 @@ app.get("/blog/search/:query?", function (req, res) {
 
     blogEngine.getLatest(blog, function (latest) {
       page.latest = latest;
+      page.searchpage = true;
       res.render("blog.html", {
         locals: page,
         partials: partials

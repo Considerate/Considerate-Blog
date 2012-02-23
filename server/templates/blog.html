@@ -52,7 +52,9 @@
 						<li class="newer"><a href="#">Newer posts &raquo;</a></li>
 					</ul>
 				</nav>
-				<a href="#" id="loadMore" data-from="{{from}}">More&hellip;</a>
+				{{^searchpage}}
+				  <a href="#" id="loadMore" data-from="{{from}}">More&hellip;</a>
+				{{/searchpage}}
 			</div>
 
 			<aside id="sidebar">
