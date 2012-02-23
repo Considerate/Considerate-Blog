@@ -5,6 +5,7 @@
       var searchValue = document.getElementById("searchbar").value;
       window.location.href = "/search/" + encodeURIComponent(searchValue);
     });
+    var i = 0;
     $(window).scroll(function () {
       var timer;
       if (!timer) {
@@ -17,6 +18,7 @@
             });
           }
         }, 400);
+        console.log(i++);
       }
     });
     $("#loadMore").click(function (event) {
