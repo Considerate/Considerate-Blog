@@ -330,7 +330,7 @@ function checkIfNeedsShrinking(filepath, resolution, callback) {
       var reso = resolution;
       var strX = reso.substring(0, reso.indexOf("x"));
       var resX = Number(strX);
-      var strY = reso.substring(reso.indexOf("x" + 1));
+      var strY = reso.substring(reso.indexOf("x")+1);
       var resY = Number(strY);
 
       console.log({
