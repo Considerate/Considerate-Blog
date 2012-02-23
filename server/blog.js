@@ -330,6 +330,8 @@ function checkIfNeedsShrinking(filepath, resolution, callback) {
       var reso = resolution;
       var resX = Number(reso.substring(0, reso.indexOf("x")));
       var resY = Number(reso.substring(reso.indexOf("x" + 1)));
+      
+      console.log({x:resX,y:resY});
 
       if (metadata && metadata.exif && resX >= metadata.exif.exifImageLength && resY > metadata.exif.exifImageWidth) {
         callback(null, true);
