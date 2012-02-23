@@ -127,7 +127,7 @@ function getPosts(blog, options, callback) {
       }
     }
   }, function (err, results, res) {
-    results.forEach(function (user) {
+    results.hits.forEach(function (user) {
       console.log(user);
     })
   });
