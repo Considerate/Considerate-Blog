@@ -359,32 +359,8 @@ app.get("/blog/author/:author", function (req, res) {
   });
 });
 
-app.get("/blog/search", function (req, res) {
-  var options = {};
-  if (req.session.user) {
-    if (req.session.user.admin === true) {
-      options.isAdmin = true;
-    }
-    options.sessionUser = req.session.user;
-  }
-  blogEngine.getPosts(blog, options, function (posts) {
-    var page = blog;
-    page.titleLink = req.url;
-    page.posts = posts;
-
-    blogEngine.getLatest(blog, function (latest) {
-      page.latest = latest;
-      res.render("blog.html", {
-        locals: page,
-        partials: partials
-      });
-    });
-
-  });
-});
-
-app.get("/blog/search/:query", function (req, res) {
-  var query = req.params.query;
+app.get("/blog/search/:query?", function (req, res) {
+  var query = req.params.query || "";
   var options = {};
   if (req.session.user) {
     if (req.session.user.admin === true) {
@@ -397,10 +373,12 @@ app.get("/blog/search/:query", function (req, res) {
     page.titleLink = req.url;
     page.posts = posts;
 
-    res.render("blog.html", {
-      locals: page,
-      partials: partials
-    });
+    blogEngine.getLatest(blog, function (latest) {
+      page.latest = latest;
+      res.render("blog.html", {
+        locals: page,
+        partials: partials
+      });
   });
 });
 
