@@ -153,7 +153,6 @@ function getPosts(blog, options, callback) {
     if (results) {
       results.hits.forEach(function (postobj) {
         var post = postobj._source;
-        console.log(post);
         post = handlePost(post);
         posts.push(post);
       });
