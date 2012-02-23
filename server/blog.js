@@ -134,13 +134,13 @@ function getPosts(blog, options, callback) {
       }
     }]
   }, function (err, results, res) {
+    var posts = [];
     if (results) {
-      results.hits.forEach(function (user) {
-        console.log(user);
-      });
+      posts = results.hits;
     }
+    callback(posts);
   });
-
+/*
   db.view(viewName, options, function (err, res) {
     var posts = [];
     res.forEach(function (key, post, id) {
@@ -154,7 +154,7 @@ function getPosts(blog, options, callback) {
       last_id = id;
     });
     callback(posts);
-  });
+  });*/
 }
 
 function defaultOptions(options) {
