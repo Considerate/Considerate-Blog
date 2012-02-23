@@ -261,8 +261,6 @@ function getBySearch(blog, searchQuery, options, callback) {
   var searchQuery = {
     "index": "gogoindex",
     "type": "gogotype",
-    "from": startindex,
-    "size": size,
     "query_string": {
       "query": searchQuery
     },
