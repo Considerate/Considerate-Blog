@@ -111,7 +111,7 @@ app.get("/blog", function (req, res) {
     }
     options.sessionUser = req.session.user;
   }
-  blogEngine.getPosts(blog, options, function (posts) {
+  blogEngine.getPosts(blog, options, function (posts,endindex) {
     var renderData = blog;
     renderData.titleLink = req.url;
 
@@ -125,7 +125,7 @@ app.get("/blog", function (req, res) {
     });
 
     renderData.posts = posts;
-    renderData.from = 5;
+    renderData.from = endindex;
 
     if (req.session.user) {
       renderData.editbar = {
