@@ -352,7 +352,7 @@ function checkIfNeedsShrinking(filepath, resolution, callback) {
           y: metadata.exif.exifImageWidth
         };
         console.log(imageRes);
-        if (resX >= imageRes.x && resY > imageRes.y) {
+        if (resX < imageRes.x || resY < imageRes.y) {
           callback(null, true);
         }
         else {
