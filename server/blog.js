@@ -139,13 +139,13 @@ function getPosts(blog, options, callback) {
     "filter": {
       "and": {
         "filters": filters,
-      },
-      "sort": [{
-        "created": {
-          "order": "desc"
-        }
-      }]
-    }
+      }
+    },
+    "sort": [{
+      "created": {
+        "order": "desc"
+      }
+    }]
   };
   console.log(JSON.stringify(searchQuery));
   client.search(searchQuery, function (err, results, res) {
