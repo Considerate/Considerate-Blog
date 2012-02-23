@@ -131,7 +131,7 @@ app.get("/blog", function (req, res) {
         add: true
       };
     }
-    blog.getLatest(blog, function (latest) {
+    blogEngine.getLatest(blog, function (latest) {
       renderData.latest = latest;
       res.render("blog.html", {
         locals: renderData,
