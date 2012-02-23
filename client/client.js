@@ -6,7 +6,7 @@
       window.location.href = "/search/" + encodeURIComponent(searchValue);
     });
     var timer;
-    var i;
+    var i = 0;
     $(window).scroll(function () {
       if (!timer) {
         timer = setTimeout(function () {
