@@ -147,11 +147,7 @@ function getPosts(blog, options, callback) {
       }]
     }
   };
-
-  if (lang !== "all") {
-    //searchQuery
-  }
-
+  console.log(JSON.stringify(searchQuery));
   client.search(searchQuery, function (err, results, res) {
     var posts = [];
     if (results) {
