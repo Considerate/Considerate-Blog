@@ -6,7 +6,7 @@
       window.location.href = "/blog/search/" + encodeURIComponent(searchValue);
     });
 
-    function ("#languages a").click(function (event) {
+    $("#languages a").click(function (event) {
       event.preventDefault();
       var link = $(this).attr("href");
       $.post(link, function (result) {
