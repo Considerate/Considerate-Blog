@@ -6,10 +6,16 @@
       window.location.href = "/search/" + encodeURIComponent(searchValue);
     });
     $(window).scroll(function () {
-      if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
-        //Add something at the end of the page
-        var moreButton = $("#loadMore");
-        loadMore(moreButton);
+      var timer;
+      if (!timer) {
+        timer = setTimeout(function () {
+          if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
+            //Add something at the end of the page
+            var moreButton = $("#loadMore");
+            loadMore(moreButton);
+            clearTimeout(timer);
+          }
+        }, 400);
       }
     });
     $("#loadMore").click(function (event) {
