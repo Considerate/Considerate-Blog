@@ -140,11 +140,12 @@ function getPosts(blog, options, callback) {
         if (post.type === "unapproved post" && options.isAdmin !== true && post.user && options.sessionUser && post.user._id !== options.sessionUser._id) {
           return;
         }
+        console.log(post);
         post = handlePost(post);
         posts.push(post);
       });
     }
-    console.log(posts);
+    
     callback(posts);
   });
 /*
