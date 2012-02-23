@@ -159,19 +159,6 @@ function getPosts(blog, options, callback) {
 
     callback(posts);
   });
-/*
-  db.view(viewName, options, function (err, res) {
-    var posts = [];
-    res.forEach(function (key, post, id) {
-
-      post = handlePost(post);
-      posts.push(post);
-
-      last_key = key;
-      last_id = id;
-    });
-    callback(posts);
-  });*/
 }
 
 function defaultOptions(options) {
