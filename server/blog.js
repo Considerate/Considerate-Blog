@@ -704,6 +704,7 @@ function convertMarkdownToHTML(markdown, allowedTags, allowedAttributes, forcePr
 
 exports.savePost = savePost;
 exports.getPosts = getPosts;
+exports.getLatest = getLatest;
 exports.getByTitle = getByTitle;
 exports.getBySearch = getBySearch;
 exports.getByCategory = getByCategory;
