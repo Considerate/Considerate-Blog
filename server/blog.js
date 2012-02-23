@@ -341,7 +341,8 @@ function checkIfNeedsShrinking(filepath, resolution, callback) {
         x: resX,
         y: resY
       });
-
+      
+      console.log(metadata);
       if (!metadata || !metadata.exif) {
         callback(null, false);
       }
