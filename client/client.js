@@ -7,8 +7,10 @@
     });
 		$("#loadMore").click(function(event) {
       event.preventDefault();
+      
+      var fromindex = $(this).attr("data-from");
 			$.ajax({
-			  url: "/blog/more",
+			  url: "/blog/more/"+fromindex,
 			  context: $("#content .posts"),
 			  success: function(data){
 			    this.append(data);
