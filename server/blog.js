@@ -119,7 +119,7 @@ function getPosts(blog, options, callback) {
     index: "gogoblog",
     type: "gogoblog",
     "from": 0,
-    "size": 2,
+    "size": 4,
     query: {
       "match_all": {}
     },
