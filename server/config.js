@@ -29,6 +29,18 @@ exports.blog = {
   {
     text: "Yahoo!"
   }],
+  languages: [{
+    text:"English",
+    link: "/blog/language/en"
+  },
+  {
+    text:"Italian",
+    link: "/blog/language/it"
+  },
+  {
+    text:"Swedish",
+    link: "/blog/language/sv"
+  }],
   nav: [{
     text: "Home",
     link: "/blog"
