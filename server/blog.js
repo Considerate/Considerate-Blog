@@ -393,16 +393,18 @@ function getImage(options, res) {
             if (needsShrinking) {
               shrinkBigImages(originalpath, options.resolution, filepath, function (err) {
                 if (!err) {
+                  console.log("No error");
                   res.sendfile(filepath);
                 }
                 else {
+                  console.log("No error");
                   console.log("Failed to shrink",originalpath,err);
                   res.send(404);
                 }
               });
             }
             else {
-              res.sendfile(filepath);
+              res.sendfile(originalpath);
             }
           }
           else {
