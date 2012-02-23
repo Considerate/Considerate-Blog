@@ -125,6 +125,7 @@ app.get("/blog", function (req, res) {
     });
 
     renderData.posts = posts;
+    renderData.from = 5;
 
     if (req.session.user) {
       renderData.editbar = {
@@ -188,7 +189,6 @@ app.post("/blog/edit/new", requiresLogin, function (req, res) {
 });
 
 app.get("/blog/edit/:post", requiresLogin, function (req, res) {
-  console.log("Can I get HERE?");
   var postName = req.params.post;
   var options = {};
   if (req.session.user) {
