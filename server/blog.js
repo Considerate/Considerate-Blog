@@ -137,6 +137,9 @@ function getPosts(blog, options, callback) {
     var posts = [];
     if (results) {
       results.hits.forEach(function (post) {
+        if (post.type === "unapproved post" && options.isAdmin !== true && post.user && options.sessionUser && post.user._id !== options.sessionUser._id) {
+          return;
+        }
         post = handlePost(post);
         posts.push(post);
       });
@@ -147,9 +150,7 @@ function getPosts(blog, options, callback) {
   db.view(viewName, options, function (err, res) {
     var posts = [];
     res.forEach(function (key, post, id) {
-      if (post.type === "unapproved post" && options.isAdmin !== true && post.user && options.sessionUser && post.user._id !== options.sessionUser._id) {
-        return;
-      }
+
       post = handlePost(post);
       posts.push(post);
 
