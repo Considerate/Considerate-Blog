@@ -3,7 +3,7 @@
     $("#searchForm").submit(function (event) {
       event.preventDefault();
       var searchValue = document.getElementById("searchbar").value;
-      window.location.href = "/search/" + encodeURIComponent(searchValue);
+      window.location.href = "/blog/search/" + encodeURIComponent(searchValue);
     });
     var timer;
     $(window).scroll(function () {
