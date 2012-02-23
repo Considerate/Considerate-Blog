@@ -379,6 +379,7 @@ app.get("/blog/search/:query?", function (req, res) {
         locals: page,
         partials: partials
       });
+    });
   });
 });
 
