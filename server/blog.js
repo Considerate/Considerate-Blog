@@ -136,7 +136,10 @@ function getPosts(blog, options, callback) {
   }, function (err, results, res) {
     var posts = [];
     if (results) {
-      posts = results.hits;
+      results.hits.forEach(function (post) {
+        post = handlePost(post);
+        posts.push(post);
+      });
     }
     callback(posts);
   });
