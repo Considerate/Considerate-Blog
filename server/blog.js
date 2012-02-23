@@ -403,7 +403,7 @@ function getImage(options, res) {
               });
             }
             else {
-              console.log("No need to shrink", originalpath);
+              console.log("No need to shrink", originalpath, options);
               res.sendfile(originalpath);
             }
           }
