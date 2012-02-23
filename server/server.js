@@ -101,8 +101,7 @@ app.get("/pdf/:url", function (req, res) {
 
 app.get("/blog", function (req, res) {
   var options = {
-    descending: true
-    //pagination: true
+    language: req.session.language
   };
 
   if (req.session.user) {
