@@ -13,7 +13,7 @@
 			  url: "/blog/more/"+fromindex,
 			  context: $("#content .posts"),
 			  success: function(data){
-			    this.append(data);
+			    this.append(data.html);
 			  }
 			});
     });
