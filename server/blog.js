@@ -115,7 +115,7 @@ function getPosts(blog, options, callback) {
     viewName = "blog/listall";
   }
   var startindex = options.from || 0;
-  var size = options.size || 5;
+  var size = options.size || 2;
   var endindex = startindex+size;
 
   client.search({
