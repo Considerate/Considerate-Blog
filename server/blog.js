@@ -328,10 +328,19 @@ function checkIfNeedsShrinking(filepath, resolution, callback) {
     }
     else {
       var reso = resolution;
-      var resX = Number(reso.substring(0, reso.indexOf("x")));
-      var resY = Number(reso.substring(reso.indexOf("x" + 1)));
-      
-      console.log({x:resX,y:resY});
+      var strX = reso.substring(0, reso.indexOf("x"));
+      var resX = Number(strX);
+      var strY = reso.substring(reso.indexOf("x" + 1));
+      var resY = Number(strY);
+
+      console.log({
+        sx: strX,
+        sy: strY
+      });
+      console.log({
+        x: resX,
+        y: resY
+      });
 
       if (metadata && metadata.exif && resX >= metadata.exif.exifImageLength && resY > metadata.exif.exifImageWidth) {
         callback(null, true);
@@ -365,7 +374,7 @@ function getImage(options, res) {
       handleImage();
     }
     else {
-      console.log("Could not file file",originalpath);
+      console.log("Could not file file", originalpath);
       res.send(404);
     }
   });
@@ -373,7 +382,7 @@ function getImage(options, res) {
 
 
   function handleImage() {
-    
+
     console.log("Handling image…");
     if (options.resolution) {
       var filepath = pathdir + "/" + options.resolution + "!" + options.name;
@@ -384,7 +393,7 @@ function getImage(options, res) {
           if (!err) {
             res.sendfile(filepath);
           } else {
-            console.log("Failed to convert poster",originalpath,err);
+            console.log("Failed to convert poster", originalpath, err);
             res.send(404);
           }
         });
@@ -399,7 +408,7 @@ function getImage(options, res) {
                   res.sendfile(filepath);
                 }
                 else {
-                  console.log("Failed to shrink",originalpath,err);
+                  console.log("Failed to shrink", originalpath, err);
                   res.send(404);
                 }
               });
@@ -411,7 +420,7 @@ function getImage(options, res) {
           }
           else {
             res.send(404);
-            console.log("Failed to shrink",originalpath,err);
+            console.log("Failed to shrink", originalpath, err);
           }
         });
       }
@@ -537,13 +546,13 @@ function convertMarkdownToHTML(markdown, allowedTags, allowedAttributes, forcePr
   function youtubeEmbed(link) {
     var url = require("url");
     var linkobj;
-    
+
     if (link.indexOf("/") === -1) {
       //if link is only ID (ie. contains no '/')
       link = "http://www.youtube.com/embed/" + link;
     }
     else {
-      linkobj = url.parse(link,true);
+      linkobj = url.parse(link, true);
       console.log(linkobj);
       link = "http://www.youtube.com/embed/" + linkobj.query.v;
     }
