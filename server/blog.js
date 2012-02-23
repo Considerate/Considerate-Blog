@@ -365,7 +365,7 @@ function checkIfNeedsShrinking(filepath, resolution, callback) {
 
 function shrinkBigImages(originalpath, resolution, newpath, callback) {
 
-  path.exists(originalpath, function (exists) {
+  path.exists(newpath, function (exists) {
     if (exists) {
       callback(null);
     }
