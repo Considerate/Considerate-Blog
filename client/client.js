@@ -8,17 +8,17 @@
     var timer;
     var i = 0;
     $(window).scroll(function () {
-      if (!timer) {
-        timer = setTimeout(function () {
-          if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
+      if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
+        if (!timer) {
+          timer = setTimeout(function () {
             //Add something at the end of the page
             var moreButton = $("#loadMore");
             loadMore(moreButton, function () {
               clearTimeout(timer);
             });
-          }
-        }, 400);
-        console.log(i++);
+          }, 400);
+          console.log(i++);
+        }
       }
     });
     $("#loadMore").click(function (event) {
