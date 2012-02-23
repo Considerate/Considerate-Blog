@@ -120,9 +120,14 @@ function getPosts(blog, options, callback) {
     type: "gogoblog",
     query: {
       "match_all": {}
+    },
+    filter: {
+      "term": {
+        "type": "user"
+      }
     }
   }, function (err, results, res) {
-    console.log(require("util").inspect(results));
+
   });
 
   db.view(viewName, options, function (err, res) {
