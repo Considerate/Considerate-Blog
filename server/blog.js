@@ -132,9 +132,11 @@ function getPosts(blog, options, callback) {
       }
     }]
   }, function (err, results, res) {
+    if(results.hits) {
     results.hits.forEach(function (user) {
       console.log(user);
-    })
+    });
+    }
   });
 
   db.view(viewName, options, function (err, res) {
