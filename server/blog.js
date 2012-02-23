@@ -122,7 +122,7 @@ function getPosts(blog, options, callback) {
       "match_all": {}
     }
   }, function (err, results, res) {
-    util.inspect(results);
+    require("util").inspect(results);
   });
 
   db.view(viewName, options, function (err, res) {
