@@ -33,7 +33,7 @@
         url: "/blog/more/" + fromindex,
         context: $("#content .posts"),
         success: function (data) {
-          $(data.html).appendTo(this).slideDown();
+          $(data.html).appendTo($(this)).slideDown();
           anchor.attr("data-from", data.fromindex);
           callback();
         }
