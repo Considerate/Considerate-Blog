@@ -116,13 +116,13 @@ function getPosts(blog, options, callback) {
   }
 
   client.search({
+    index: "gogoblog",
+    type: "gogoblog",
     query: {
-      query_string: {
-        query: 'welcome'
-      }
+      "match_all": {}
     }
   }, function (err, results, res) {
-    // ...
+    console.log(results);
   });
 
   db.view(viewName, options, function (err, res) {
