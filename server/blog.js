@@ -127,7 +127,7 @@ function getPosts(blog, options, callback) {
       "match_all": {}
     },
     "filter": {
-      "text": {
+      "term": {
         "type": "post"
       }
     },
