@@ -6,7 +6,6 @@
       window.location.href = "/search/" + encodeURIComponent(searchValue);
     });
     var timer;
-    var i = 0;
     $(window).scroll(function () {
       if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
         if (!timer) {
@@ -17,7 +16,6 @@
               timer = null;
             });
           }, 400);
-          console.log(i++);
         }
       }
     });
