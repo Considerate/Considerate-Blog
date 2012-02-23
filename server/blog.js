@@ -114,12 +114,15 @@ function getPosts(blog, options, callback) {
   if (options.isAdmin === true || options.sessionUser) {
     viewName = "blog/listall";
   }
+  var startindex = options.from || 0;
+  var size = options.size || 5;
+  var endindex = startindex+size;
 
   client.search({
     index: "gogoblog",
     type: "gogoblog",
-    "from": options.from || 0,
-    "size": options.size || 5,
+    "from": startindex,
+    "size": size,
     query: {
       "match_all": {}
     },
@@ -157,7 +160,7 @@ function getPosts(blog, options, callback) {
       });
     }
 
-    callback(posts);
+    callback(posts,endindex,startindex);
   });
 }
 

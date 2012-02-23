@@ -148,13 +148,18 @@ app.get("/blog/more/:fromindex", function (req, res) {
   var options = {
     from: req.params.fromindex
   };
-  blogEngine.getPosts(blog, options, function (posts, latest) {
+  blogEngine.getPosts(blog, options, function (posts, endindex) {
     var renderData = blog;
     renderData.titleLink = req.url;
     renderData.posts = posts;
     res.render("moreBlog.html", {
       locals: renderData,
       partials: partials
+    }, function (err, renderedHTML) {
+      res.json({
+        html: renderedHTML,
+        fromindex: endindex
+      })
     });
   });
 });
