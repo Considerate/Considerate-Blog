@@ -123,9 +123,14 @@ function getPosts(blog, options, callback) {
     },
     filter: {
       "term": {
-        "type": "user"
+        "type": "post"
       }
-    }
+    },
+    sort: [{
+      "created_at": {
+        "order": "desc"
+      }
+    }]
   }, function (err, results, res) {
     results.hits.forEach(function (user) {
       console.log(user);
