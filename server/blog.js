@@ -281,7 +281,7 @@ function getBySearch(blog, searchQuery, options, callback) {
       }
     }]
   };
-  console.log(searchQuery);
+  console.log(JSON.stringify(searchQuery));
 
   client.search(searchQuery, function (err, results, res) {
     var posts = [];
