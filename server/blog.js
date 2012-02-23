@@ -15,6 +15,9 @@ var im = require("imagemagick");
 
 var blog = config.blog;
 
+var elastical = require('elastical');
+var client = new elastical.Client();
+
 /**
  * Get all posts
  */
@@ -112,6 +115,12 @@ function getPosts(blog, callback, options) {
     viewName = "blog/listall";
   }
 
+  client.search({
+      query: {query_string: {query: 'welcome'}}
+  }, function (err, results, res) {
+      // ...
+  });
+
   db.view(viewName, options, function (err, res) {
     var posts = [];
     res.forEach(function (key, post, id) {
@@ -124,10 +133,7 @@ function getPosts(blog, callback, options) {
       last_key = key;
       last_id = id;
     });
-    getLatest(blog, function (latest) {
-      blog.latest = latest;
-      callback(posts, latest);
-    });
+    callback(posts);
   });
 }
 

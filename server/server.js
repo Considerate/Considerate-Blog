@@ -111,7 +111,7 @@ app.get("/blog", function (req, res) {
     }
     options.sessionUser = req.session.user;
   }
-  blogEngine.getPosts(blog, function (posts, latest) {
+  blogEngine.getPosts(blog, function (posts) {
     var renderData = blog;
     renderData.titleLink = req.url;
 
@@ -131,11 +131,14 @@ app.get("/blog", function (req, res) {
         add: true
       };
     }
-
-    res.render("blog.html", {
-      locals: renderData,
-      partials: partials
+    getLatest(blog, function (latest) {
+      renderData.latest = latest;
+      res.render("blog.html", {
+        locals: renderData,
+        partials: partials
+      });
     });
+
   }, options);
 
 });
