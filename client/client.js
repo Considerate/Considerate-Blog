@@ -14,7 +14,7 @@
             //Add something at the end of the page
             var moreButton = $("#loadMore");
             loadMore(moreButton, function () {
-              clearTimeout(timer);
+              timer = null;
             });
           }, 400);
           console.log(i++);
