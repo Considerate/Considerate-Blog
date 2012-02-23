@@ -119,19 +119,19 @@ function getPosts(blog, options, callback) {
   var endindex = startindex+size;
 
   client.search({
-    index: "gogoblog",
-    type: "gogoblog",
+    "index": "gogoindex",
+    "type": "gogotype",
     "from": startindex,
     "size": size,
-    query: {
+    "query": {
       "match_all": {}
     },
-    filter: {
+    "filter": {
       "text": {
         "type": "post"
       }
     },
-    sort: [{
+    "sort": [{
       "created": {
         "order": "desc"
       }
