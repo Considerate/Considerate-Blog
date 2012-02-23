@@ -15,7 +15,6 @@
             var moreButton = $("#loadMore");
             loadMore(moreButton, function () {
               clearTimeout(timer);
-              isWaiting = false;
             });
           }
         }, 400);
