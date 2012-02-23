@@ -371,6 +371,8 @@ function getImage(options, res) {
 
 
   function handleImage() {
+    
+    console.log("Handling image…");
     if (options.resolution) {
       var filepath = pathdir + "/" + options.resolution + "!" + options.name;
 
