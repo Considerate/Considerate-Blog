@@ -151,6 +151,14 @@ app.get("/blog/more/:fromindex", function (req, res) {
   blogEngine.getPosts(blog, options, function (posts, endindex) {
     var renderData = blog;
     renderData.titleLink = req.url;
+    posts.forEach(function (post) {
+      if (post) {
+        post.text = post.shorttext;
+        if (post.type === "unapproved post") {
+          post.unapproved = "unapproved";
+        }
+      }
+    });
     renderData.posts = posts;
     res.render("moreBlog.html", {
       locals: renderData,
