@@ -118,6 +118,8 @@ function getPosts(blog, options, callback) {
   client.search({
     index: "gogoblog",
     type: "gogoblog",
+    "from": 0,
+    "size": 2,
     query: {
       "match_all": {}
     },
@@ -132,10 +134,10 @@ function getPosts(blog, options, callback) {
       }
     }]
   }, function (err, results, res) {
-    if(results) {
-    results.hits.forEach(function (user) {
-      console.log(user);
-    });
+    if (results) {
+      results.hits.forEach(function (user) {
+        console.log(user);
+      });
     }
   });
 
