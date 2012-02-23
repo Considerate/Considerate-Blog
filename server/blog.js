@@ -270,12 +270,7 @@ function getBySearch(blog, searchQuery, options, callback) {
       "term": {
         "type": "post"
       }
-    },
-    "sort": [{
-      "created": {
-        "order": "desc"
-      }
-    }]
+    }
   };
   console.log(JSON.stringify(searchQuery));
 
