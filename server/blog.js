@@ -141,7 +141,7 @@ function getPosts(blog, options, callback) {
     if (results) {
       results.hits.forEach(function (postobj) {
         var post = postobj._source;
-        if (post.type === "unapproved post") {
+        /*if (post.type === "unapproved post") {
           if (options.isAdmin !== true) {
             if (post.user && options.sessionUser) {
               if (post.user._id !== options.sessionUser._id) {
@@ -153,7 +153,7 @@ function getPosts(blog, options, callback) {
               return;
             }
           }
-        }
+        }*/
         console.log(post);
         post = handlePost(post);
         posts.push(post);
