@@ -127,7 +127,9 @@ function getPosts(blog, options, callback) {
       }
     }
   }, function (err, results, res) {
-
+    results.forEach(function (user) {
+      console.log(user);
+    })
   });
 
   db.view(viewName, options, function (err, res) {
