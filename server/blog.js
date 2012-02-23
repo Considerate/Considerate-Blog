@@ -144,6 +144,7 @@ function getPosts(blog, options, callback) {
         posts.push(post);
       });
     }
+    console.log(posts);
     callback(posts);
   });
 /*
