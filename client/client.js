@@ -36,7 +36,7 @@
           var appendix = $(data.html);
           appendix.hide();
           appendix.appendTo($(this));
-          appendix.slideDown("slow");
+          appendix.slideDown("normal");
           anchor.attr("data-from", data.fromindex);
           callback();
         }
