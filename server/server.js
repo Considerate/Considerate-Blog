@@ -428,6 +428,10 @@ app.get("/blog/:post", function (req, res) {
 
 app.post("/blog/language/:lang", function (req,res) {
   req.session.language = req.params.lang;
+  res.json({
+    success: true,
+    language: req.params.lang
+  });
 });
 
 

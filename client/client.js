@@ -5,8 +5,16 @@
       var searchValue = document.getElementById("searchbar").value;
       window.location.href = "/blog/search/" + encodeURIComponent(searchValue);
     });
-    var timer;
 
+    function ("#languages a").click(function (event) {
+      event.preventDefault();
+      var link = $(this).attr("href");
+      $.post(link, function (result) {
+        console.log(result);
+      }, "json");
+    })
+
+    var timer;
     var moreButton = $("#loadMore");
     if (moreButton.get(0)) {
       $(window).scroll(function () {
