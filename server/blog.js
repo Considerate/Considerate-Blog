@@ -330,7 +330,7 @@ function checkIfNeedsShrinking(filepath, resolution, callback) {
       var reso = resolution;
       var strX = reso.substring(0, reso.indexOf("x"));
       var resX = Number(strX);
-      var strY = reso.substring(reso.indexOf("x")+1);
+      var strY = reso.substring(reso.indexOf("x") + 1);
       var resY = Number(strY);
 
       console.log({
@@ -342,11 +342,20 @@ function checkIfNeedsShrinking(filepath, resolution, callback) {
         y: resY
       });
 
-      if (metadata && metadata.exif && resX >= metadata.exif.exifImageLength && resY > metadata.exif.exifImageWidth) {
-        callback(null, true);
+      if (!metadata || !metadata.exif) {
+        callback(null, false);
       }
       else {
-        callback(null, false);
+        var imageRes = {
+          x: metadata.exif.exifImageLength,
+          y: metadata.exif.exifImageWidth
+        }
+        if (resX >= imageRes.x && resY > imageRes.y) {
+          callback(null, true);
+        }
+        else {
+          callback(null, false);
+        }
       }
     }
   });
