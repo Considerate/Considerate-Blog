@@ -125,12 +125,12 @@ function getPosts(blog, options, callback) {
       "term": {
         "type": "post"
       }
-    }/*,
+    },
     sort: [{
-      "created_at": {
+      "created": {
         "order": "desc"
       }
-    }]*/
+    }]
   }, function (err, results, res) {
     if(results) {
     results.hits.forEach(function (user) {
