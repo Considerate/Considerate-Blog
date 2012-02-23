@@ -5,9 +5,9 @@
       var searchValue = document.getElementById("searchbar").value;
       window.location.href = "/search/" + encodeURIComponent(searchValue);
     });
-    var i = 0;
+    var timer;
+    var i;
     $(window).scroll(function () {
-      var timer;
       if (!timer) {
         timer = setTimeout(function () {
           if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
@@ -15,6 +15,7 @@
             var moreButton = $("#loadMore");
             loadMore(moreButton, function () {
               clearTimeout(timer);
+              isWaiting = false;
             });
           }
         }, 400);
