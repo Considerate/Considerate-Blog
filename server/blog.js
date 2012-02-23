@@ -397,13 +397,13 @@ function getImage(options, res) {
                   res.sendfile(filepath);
                 }
                 else {
-                  console.log("No error");
                   console.log("Failed to shrink",originalpath,err);
                   res.send(404);
                 }
               });
             }
             else {
+              console.log("No need to shrink", originalpath);
               res.sendfile(originalpath);
             }
           }
