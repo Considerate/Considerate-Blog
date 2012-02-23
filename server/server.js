@@ -426,6 +426,10 @@ app.get("/blog/:post", function (req, res) {
   });
 });
 
+app.post("/blog/language/:lang", function (req,res) {
+  req.session.language = req.params.lang;
+});
+
 
 var port = process.env.PORT || 80;
 app.listen(port, function () {

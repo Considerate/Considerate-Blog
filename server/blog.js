@@ -113,8 +113,9 @@ function getPosts(blog, options, callback) {
   var startindex = options.from || 0;
   var size = options.size || 3;
   var endindex = startindex + size;
+  var lang = options.language || "en";
 
-  client.search({
+  var searchQuery = {
     "index": "gogoindex",
     "type": "gogotype",
     "from": startindex,
@@ -123,16 +124,27 @@ function getPosts(blog, options, callback) {
       "match_all": {}
     },
     "filter": {
-      "term": {
-        "type": "post"
-      }
+      "and": [{
+        "term": {
+          "type": "post"
+        },
+        "term": {
+          "language": lang
+        }
+      }]
     },
     "sort": [{
       "created": {
         "order": "desc"
       }
     }]
-  }, function (err, results, res) {
+  };
+
+  if (lang !== "all") {
+    //searchQuery
+  }
+
+  client.search(searchQuery, function (err, results, res) {
     var posts = [];
     if (results) {
       results.hits.forEach(function (postobj) {
