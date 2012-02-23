@@ -136,7 +136,8 @@ function getPosts(blog, options, callback) {
   }, function (err, results, res) {
     var posts = [];
     if (results) {
-      results.hits.forEach(function (post) {
+      results.hits.forEach(function (postobj) {
+        var post = postobj._source;
         if (post.type === "unapproved post" && options.isAdmin !== true && post.user && options.sessionUser && post.user._id !== options.sessionUser._id) {
           return;
         }
