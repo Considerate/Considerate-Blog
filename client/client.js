@@ -8,7 +8,7 @@
     var timer;
 
     var moreButton = $("#loadMore");
-    if (moreButton.get(0)) {
+    if (moreButton) {
       $(window).scroll(function () {
         if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
           if (!timer) {
