@@ -109,11 +109,7 @@ function beforeSave(post) {
 
 function getPosts(blog, options, callback) {
   options = defaultOptions(options);
-
-  var viewName = "blog/all";
-  if (options.isAdmin === true || options.sessionUser) {
-    viewName = "blog/listall";
-  }
+  
   var startindex = options.from || 0;
   var size = options.size || 3;
   var endindex = startindex+size;
@@ -257,6 +253,7 @@ function getBySearch(blog, searchQuery, options, callback) {
   var last_id = null;
   options = defaultOptions(options);
   searchQuery = generateSlug(searchQuery);
+  /*
   getPosts(blog, options, function (posts) {
     var result = posts.filter(function (item) {
       //Filter out all not matching search query
@@ -264,6 +261,48 @@ function getBySearch(blog, searchQuery, options, callback) {
     });
     callback(result);
   }, options);
+  */
+  
+  var startindex = options.from || 0;
+  var size = options.size || 3;
+  var endindex = startindex+size;
+
+  client.search({
+    "index": "gogoindex",
+    "type": "gogotype",
+    "from": startindex,
+    "size": size,
+    "query": {
+      "query_string": {
+        "query":{
+          "_all":searchQuery
+        }
+      }
+    },
+    "filter": {
+      "term": {
+        "type": "post"
+      }
+    },
+    "sort": [{
+      "created": {
+        "order": "desc"
+      }
+    }]
+  }, function (err, results, res) {
+    var posts = [];
+    if (results) {
+      results.hits.forEach(function (postobj) {
+        var post = postobj._source;
+        console.log(post);
+        post = handlePost(post);
+        posts.push(post);
+      });
+    }
+
+    callback(posts,startindex+posts.length,startindex);
+  });
+  
 }
 
 
