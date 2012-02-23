@@ -12,8 +12,9 @@
           if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
             //Add something at the end of the page
             var moreButton = $("#loadMore");
-            loadMore(moreButton);
-            clearTimeout(timer);
+            loadMore(moreButton, function () {
+              clearTimeout(timer);
+            });
           }
         }, 400);
       }
@@ -24,7 +25,7 @@
       loadMore(moreButton);
     });
 
-    function loadMore(anchor) {
+    function loadMore(anchor, callback) {
       var fromindex = anchor.attr("data-from");
       $.ajax({
         url: "/blog/more/" + fromindex,
@@ -32,6 +33,7 @@
         success: function (data) {
           this.append(data.html);
           anchor.attr("data-from", data.fromindex);
+          callback();
         }
       });
     }
