@@ -139,7 +139,7 @@
         name: 'Video',
         key: 'M',
         openWith: '%[',
-        closeWith: '[![YouTube URL:!:http://]!]]',
+        closeWith: '[![YouTube URL or ID:!:http://]!]]',
         placeHolder: ''
       },]
     }
