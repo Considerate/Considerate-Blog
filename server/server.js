@@ -134,9 +134,7 @@ app.get("/blog", function (req, res) {
       };
     }
     else {
-      renderData.editbar = {
-        add: false
-      };
+      renderData.editbar = undefined;
     }
     blogEngine.getLatest(blog, function (latest) {
       renderData.latest = latest;
