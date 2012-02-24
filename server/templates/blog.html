@@ -47,12 +47,11 @@
 				</div>
 				
 				<nav id="pagination">
-					<ul>
-					</ul>
+					{{^searchpage}}
+  				  <a href="#" id="loadMore" data-from="{{from}}">More&hellip;</a>
+  				{{/searchpage}}
 				</nav>
-				{{^searchpage}}
-				  <a href="#" id="loadMore" data-from="{{from}}">More&hellip;</a>
-				{{/searchpage}}
+
 			</div>
 
 			<aside id="sidebar">
