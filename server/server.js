@@ -133,6 +133,11 @@ app.get("/blog", function (req, res) {
         add: true
       };
     }
+    else {
+      renderData.editbar = {
+        add: false
+      };
+    }
     blogEngine.getLatest(blog, function (latest) {
       renderData.latest = latest;
       renderData.searchpage = false;
