@@ -3,6 +3,10 @@
 server="localhost"
 port="9997"
 
+# Delete the index from before
+curl -XDELETE    "$server:$port/gogoindex"
+curl -XDELETE    "$server:$port/_river"
+
 # Create the index
 curl -XPUT    "$server:$port/gogoindex"
 
@@ -11,7 +15,8 @@ curl -XPUT    "$server:$port/gogoindex/gogotype/_mapping" -d '
 {
     "gogotype" : {
         "properties" : {
-            "type" : {"type" : "string", "index":"not_analyzed"}
+            "type" : {"type" : "string", "index":"not_analyzed"},
+            "language" : {"type" : "string", "index":"not_analyzed"}
         }
     }
 }

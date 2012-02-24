@@ -10,7 +10,7 @@
       event.preventDefault();
       var link = $(this).attr("href");
       $.post(link, function (result) {
-        console.log(result);
+        window.location.reload();
       }, "json");
     })
 
