@@ -45,8 +45,15 @@
 				   {{>bloglistpost}}
 				{{/posts}}
 				</div>
+				
+				<nav id="pagination">
+					<ul>
+						<li class="older"><a href="#">&laquo; Older posts</a></li>
+						<li class="newer"><a href="#">Newer posts &raquo;</a></li>
+					</ul>
+				</nav>
 				{{^searchpage}}
-				  <a href="#" id="loadMore" data-from="{{from}}">Load more posts</a>
+				  <a href="#" id="loadMore" data-from="{{from}}">More&hellip;</a>
 				{{/searchpage}}
 			</div>
 
@@ -65,8 +72,8 @@
 					</ul>
 				</section>
 
-				<section id="languages">
-					<h3>Languages</h3>
+				<section id="language">
+					<h3>Languaes</h3>
 					<ul>
 						{{#languages}}
 						<li><a href="{{link}}">{{text}}</a></li>
