@@ -111,7 +111,7 @@ function getPosts(blog, options, callback) {
   options = defaultOptions(options);
 
   var startindex = options.from || 0;
-  var size = options.size || 3;
+  var size = options.size || 2;
   var endindex = startindex + size;
   var lang = options.language || "en";
 
