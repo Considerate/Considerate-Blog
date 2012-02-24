@@ -104,6 +104,7 @@ app.get("/blog", function (req, res) {
     language: req.session.language
   };
   console.log(options);
+  console.log(req.session);
   if (req.session.user) {
     if (req.session.user.admin === true) {
       options.isAdmin = true;
