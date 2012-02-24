@@ -146,7 +146,8 @@ app.get("/blog", function (req, res) {
 
 app.get("/blog/more/:fromindex", function (req, res) {
   var options = {
-    from: Number(req.params.fromindex)
+    from: Number(req.params.fromindex),
+    language: req.params.language
   };
   blogEngine.getPosts(blog, options, function (posts, endindex) {
     var renderData = blog;
