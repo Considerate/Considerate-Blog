@@ -128,6 +128,7 @@ app.get("/blog", function (req, res) {
     renderData.from = endindex;
 
     if (req.session.user) {
+      console.log("Has user");
       renderData.editbar = {
         add: true
       };
